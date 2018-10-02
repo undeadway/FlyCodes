@@ -1,0 +1,24 @@
+{
+  "name": "FlyCodes",
+  "version": "0.0.1",
+  "description": "The parser of rich text editor.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/undeadway/FlyCodes.git"
+  },
+  "keywords": [
+    "expands",
+    "javascript"
+  ],
+  "author": "hzwaygc@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/undeadway/FlyCodes/issues"
+  },
+  "homepage": "http://wpl.waygc.net/prj=FlyCodes",
+  "dependencies": {}
+}

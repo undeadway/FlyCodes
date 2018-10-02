@@ -1,8 +1,8 @@
 {
-  "name": "FlyCodes",
+  "name": "flycodes",
   "version": "0.0.1",
-  "description": "The parser of rich text editor.",
-  "main": "index.js",
+  "description": "A parser of rich text editor.",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,5 +20,6 @@
     "url": "https://github.com/undeadway/FlyCodes/issues"
   },
   "homepage": "http://wpl.waygc.net/prj=FlyCodes",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {}
 }

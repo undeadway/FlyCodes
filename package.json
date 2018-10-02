@@ -20,6 +20,8 @@
     "url": "https://github.com/undeadway/FlyCodes/issues"
   },
   "homepage": "http://wpl.waygc.net/prj=FlyCodes",
-  "dependencies": {},
+  "dependencies": {
+     "coralian":"0.0.4"
+  },
   "devDependencies": {}
 }

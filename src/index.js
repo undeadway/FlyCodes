@@ -21,7 +21,7 @@ let proxy = new Proxy(parsers, {
 	}
 });
 
-let highLighter = FlyHighLighter.execute;
+let highLighter = null;
 
 var CODES_OBJ = {
 	regexp: /```(.*[\r\n]+)((.|\s)*?)```/,
@@ -42,23 +42,27 @@ function parseCodes(arg) {
 
 	return {
 		before: (input) => {
-			while (arg.regexp.test(input)) {
+			if (highLighter) {
+				while (arg.regexp.test(input)) {
 
-				let name = RegExp[arg.name];
-				let code = RegExp[arg.code];
-				let codeWithLang = arg.withLang(name, code);
+					let name = RegExp[arg.name];
+					let code = RegExp[arg.code];
+					let codeWithLang = arg.withLang(name, code);
 
-				input = input.replace(codeWithLang, "{toCode" + codes.length + "}");
-				code = highLighter(code, name);
+					input = input.replace(codeWithLang, "{toCode" + codes.length + "}");
+					code = highLighter(code, name);
 
-				codes.push(code);
+					codes.push(code);
+				}
 			}
 			return input;
 		},
 		after: (input) => {
-			Array.forEach(codes, (i, obj) => {
-				input = input.replace("{toCode" + i + "}", obj);
-			});
+			if (highLighter) {
+				Array.forEach(codes, (i, obj) => {
+					input = input.replace("{toCode" + i + "}", obj);
+				});
+			}
 			return input;
 		}
 	}
@@ -147,6 +151,9 @@ function getPlugIn(name) {
 }
 
 Coralian.setToGlobal("FlyCodes", {
+	setHighLighter : input => {
+		highLighter = input;
+	},
 	toHTML: (src, name) => {
 
 		if (!name) return src;

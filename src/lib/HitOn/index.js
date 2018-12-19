@@ -1,6 +1,6 @@
 
-const MAIN_QUOT_REGX = /\n\n((&gt;(.*)\n)+)/,
-	NL_RT_ANGLE_GLOBAL_REGX = /\n&gt;/g;
+const MAIN_QUOT_REGX = /\n(\n(>(.*)\n)+)/,
+	NL_RT_ANGLE_GLOBAL_REGX = /\n>/g;
 const STRING_QUOTE = "引用";
 const BR_TAG = "<br />";
 
@@ -9,7 +9,7 @@ function replaceQuote(input) {
 	while (MAIN_QUOT_REGX.test(input)) { // 获取>列表行，从 \n> 开始 到 >\n 结束，中间每行都以 > 开头 \n 结束
 		let protoQuotTxt = RegExp.$1;
 		let quotTxt = protoQuotTxt.replace(NL_RT_ANGLE_GLOBAL_REGX, "\n"); // 去掉每行开头的 >(&gt;)
-		quotTxt = quotTxt.slice(4); // 去掉第一行的 >(&gt;)
+		quotTxt = quotTxt.slice(1); // 去掉第一行的换行符
 		let indexNL = quotTxt.indexOf("\n");
 
 		let quotTtlLn = quotTxt.slice(0, indexNL);
@@ -321,7 +321,7 @@ module.exports = commons = require("../commons").create((input) => {
 					end: "`"
 				}
 			},
-			escapeSequence: /\[\[((.|\s) *?) \]\]/
+			escapeSequence: /\\(\S)/
 		}
 	});
 

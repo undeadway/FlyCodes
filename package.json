@@ -1,6 +1,6 @@
 {
   "name": "flycodes",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A parser of rich text editor.",
   "main": "src/index.js",
   "scripts": {

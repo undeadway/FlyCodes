@@ -9,7 +9,7 @@ function replaceObjects(str, arg) {
 
 		if (arg.replace) { // 内部还有切换需求的时候进行处理
 			inner = inner.replace(arg.replace.start.from, arg.replace.start.to);
-			inner = inner.replace(arg.replace.end.from, arg.end.start.to);
+			inner = inner.replace(arg.replace.end.from, arg.replace.end.to);
 		}
 
 		let output = `<${htmlTag}>${inner}</${htmlTag}>`;

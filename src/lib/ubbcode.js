@@ -372,7 +372,7 @@ const BUILT_IN_OBJS = [
 		}
 	},
 	{
-		regexp: /\[phonics\]((.|\s)*?)\[\/phonics\]/,
+		regexp: /\[phonics\]((.|\s)*?) \[\/phonics\]/,
 		tag: {
 			start: '[phonics]',
 			end: '[/phonics]',

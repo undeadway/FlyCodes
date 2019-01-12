@@ -1,3 +1,5 @@
+const BR_TAG = "<br />";
+const NL_REGX = /\n/g;
 
 function replaceObjects(str, arg) {
 
@@ -9,7 +11,7 @@ function replaceObjects(str, arg) {
 
 		if (arg.replace) { // 内部还有切换需求的时候进行处理
 			inner = inner.replace(arg.replace.start.from, arg.replace.start.to);
-			inner = inner.replace(arg.replace.end.from, arg.replace.end.to);
+			inner = inner.replace(arg.replace.end.from, arg.end.start.to);
 		}
 
 		let output = `<${htmlTag}>${inner}</${htmlTag}>`;
@@ -126,6 +128,8 @@ module.exports = {
 						str = obj(str);
 					});
 				}
+
+				str = str.replace(NL_REGX, BR_TAG); // 单行换行
 
 				return replaceURI(str);
 			}

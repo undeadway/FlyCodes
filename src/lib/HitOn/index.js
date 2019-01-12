@@ -2,7 +2,6 @@
 const MAIN_QUOT_REGX = /\n(\n(>(.*)\n)+)/,
 	NL_RT_ANGLE_GLOBAL_REGX = /\n>/g;
 const STRING_QUOTE = "引用";
-const BR_TAG = "<br />";
 
 function replaceQuote(input) {
 
@@ -242,8 +241,7 @@ const COMMENT_REGX = /\/\*((.|\s)*?)\*\//g,
 	H4_REGX = /#### (.*?)(\n|$)/g,
 	H3_REGX = /### (.*?)(\n|$)/g,
 	H2_REGX = /## (.*?)(\n|$)/g,
-	H1_REGX = /# (.*?)(\n|$)/g,
-	NL_REGX = /\n/g;
+	H1_REGX = /# (.*?)(\n|$)/g;
 
 const ITALIC_STR = "<em>$1</em>",
 	BOLD_STR = "<strong>$1</strong>",
@@ -308,8 +306,6 @@ module.exports = commons = require("../commons").create((input) => {
 
 	// 整个文本中，到处都有需要换行处理的地方，而且换行直接<br /> 更符合我自己的习惯，所以段落处理不再实现
 	//input = replaceP(input); // 段落
-
-	input = input.replace(NL_REGX, BR_TAG); // 单行换行
 
 	return input;
 }, {

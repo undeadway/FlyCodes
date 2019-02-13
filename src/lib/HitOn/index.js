@@ -95,8 +95,8 @@ function replaceLink(input) {
 
 	let links = [];
 
-	return  {
-		before : input => {
+	return {
+		before: input => {
 			while (LINK_TAG_REGX.test(input)) {
 				var inner = RegExp.$1;
 				var splits = inner.split("|");
@@ -113,16 +113,16 @@ function replaceLink(input) {
 				outs += '</a>';
 				outs = outs.replace(/<\/?em>/g, "/");
 
-				input = input.replace("#(" + inner + ")", `{links-${links.length}}`);
+				input = input.replace("#(" + inner + ")", `{links~${links.length}}`);
 				links.push(outs);
 			}
 			return input;
 		},
-		after : input => {
-			Array.forEach(links, (i, e)=> {
-				input = input.replace(`{links-${i}}`, e);
+		after: input => {
+			Array.forEach(links, (i, e) => {
+				input = input.replace(`{links~${i}}`, e);
 			})
-			return input;FFFF
+			return input;
 		}
 	}
 }
@@ -134,11 +134,11 @@ function replaceLink(input) {
  */
 const IMG_TAG_REGX = /\$\(((.|\s)*?)\)/;
 function replaceImage(input) {
-	
+
 	let images = [];
 
 	return {
-		before : input => {
+		before: input => {
 			while (IMG_TAG_REGX.test(input)) {
 				var inner = RegExp.$1;
 				var splits = inner.split("|");
@@ -157,16 +157,16 @@ function replaceImage(input) {
 				}
 				outs += ' onload="styles.Image.resize(this)" onclick="styles.Image.protoSize(this)" />';
 
-				input = input.replace("$(" + inner + ")", `{images-${images.length}}`);
+				input = input.replace("$(" + inner + ")", `{images~${images.length}}`);
 				images.push(outs);
 			}
 			return input;
 		},
-		after : input => {
+		after: input => {
 			Array.forEach(images, (i, e) => {
-				input = input.replace(`{images-${i}}`, e);
+				input = input.replace(`{images~${i}}`, e);
 			})
-			return input; FFFF
+			return input;
 		}
 	};
 }
@@ -203,22 +203,66 @@ function replaceEscapers() {
 	let escapes = [];
 
 	return {
-		before : input => {
+		before: input => {
 
 			while ((matches = input.match(ESCAPER_REGX)) !== null) {
 
 				let part = matches[0];
-				input = input.replace(part, `${escapes.length}`);
+				input = input.replace(part, `{escape~${escapes.length}}`);
 				escapes.push(part);
 			}
 
 			return input;
 		},
-		after : input => {
+		after: input => {
 
-			Array.forEach(escapes, (i ,e ) => {
-				input = input.replace(`{escape-${i}`, e);
-			})
+			Array.forEach(escapes, (i, e) => {
+				input = input.replace(`{escape~${i}}`, e);
+			});
+
+			return input;
+		}
+	};
+}
+
+function replaceAlign() {
+
+	let align = [];
+
+	return {
+		before: input => {
+
+			while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
+
+				let part = matches[0];
+				let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
+				input = input.replace(part, `{align~${align.length}}`);
+				align.push(str);
+			}
+
+			while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
+
+				let part = matches[0];
+				let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
+				input = input.replace(part, `{align~${align.length}}`);
+				align.push(str);
+			}
+
+			while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
+
+				let part = matches[0];
+				let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
+				input = input.replace(part, `{align~${align.length}}`);
+				align.push(str);
+			}
+
+			return input;
+		},
+		after: input => {
+
+			Array.forEach(align, (i, e) => {
+				input = input.replace(`{align~${i}}`, e);
+			});
 
 			return input;
 		}
@@ -228,13 +272,11 @@ function replaceEscapers() {
 const COMMENT_REGX = /\/\*((.|\s)*?)\*\//g,
 	ITALIC_REGX = /\/((.|\s){1,})\//g,
 	BOLD_REGX = /!((.|\s)*?)!/g,
-	UNCHECKED_CHECKBOX_REGX = /\[\-:((.|\s)*?)\]/g,
-	CHECKED_CHECKBOX_REGX = /\[\+:((.|\s)*?)\]/g,
 	DEL_LINE_REGX = /-((.|\s)*?)-/g,
 	INS_LINE_REGX = /_((.|\s)*?)_/g,
-	CENTER_ALIGN_REGX = /\n&gt;&gt;((.|\s)+)&lt;&lt;\n/g,
-	LEFT_ALIGN_REGX = /\n\|\:((.|\s)+)&lt;&lt;\n/g,
-	RIGHT_ALIGN_REGX = /\n&gt;&gt;((.|\s)+)\:\|\n/g,
+	CENTER_ALIGN_REGX = /\n>>((.|\s)+?)<<\n/,
+	LEFT_ALIGN_REGX = /\n\|\:((.|\s)+?)<<\n/,
+	RIGHT_ALIGN_REGX = /\n>>((.|\s)+?)\:\|\n/,
 	FONT_SIZE_REGX = /\?\(([1-9]([0-9]?)):((.|\s)*?)\)/,
 	H6_REGX = /###### (.*?)(\n|$)/g,
 	H5_REGX = /##### (.*?)(\n|$)/g,
@@ -245,13 +287,11 @@ const COMMENT_REGX = /\/\*((.|\s)*?)\*\//g,
 
 const ITALIC_STR = "<em>$1</em>",
 	BOLD_STR = "<strong>$1</strong>",
-	CHECKED_CHECKBOX_STR = "<input type=checkbox checked=checked name=$1 />",
-	UNCHECKED_CHECKBOX_STR = "<input type=checkbox name=$1 />",
 	DEL_LINE_STR = "<del>$1</del>",
 	INS_LINE_STR = "<ins>$1</ins>",
 	CENTER_ALIGN_STR = '<div class="align_center">$1</div>',
-	LEFT_ALIGN_STR = '<div align="align_left">$1</div>',
-	RIGHT_ALIGN_STR = '<div align="align_right">$1</div>',
+	LEFT_ALIGN_STR = '<div class="align_left">$1</div>',
+	RIGHT_ALIGN_STR = '<div class="align_right">$1</div>',
 	FONT_SIZE_STR = '<span class="size_$1">$3</span>',
 	H6_STR = "<h1 class=\"h6\">$1</h1>",
 	H5_STR = "<h1 class=\"h5\">$1</h1>",
@@ -264,38 +304,33 @@ module.exports = commons = require("../commons").create((input) => {
 
 	input = input.replace(COMMENT_REGX, String.BLANK); // 去掉注释
 
-	let link = replaceLink();
-	let image = replaceImage();
-	let escape = replaceEscapers();
+	let link = replaceLink(); // 连接
+	let image = replaceImage(); // 图像
+	let align = replaceAlign(); // 对齐
+	let escape = replaceEscapers(); // 转义字符
 
 	input = link.before(input);
 	input = image.before(input);
 	input = escape.before(input);
+	input = align.before(input);
 
 	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
+	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
 
 	input = link.after(input);
 	input = image.after(input);
+	input = align.after(input);
 	input = escape.after(input);
 
 	input = replaceQuote(input); // 引用
 	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
-	input = input.replace(UNCHECKED_CHECKBOX_REGX, UNCHECKED_CHECKBOX_STR); // 未选中复选框
-	input = input.replace(CHECKED_CHECKBOX_REGX, CHECKED_CHECKBOX_STR); // 选中的复选框
 	input = input.replace(DEL_LINE_REGX, DEL_LINE_STR); // 删除线
-	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
 	input = replaceList(input); // 列表
 	input = replaceTable(input); // 表格
-
-	input = input.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR); // 居中对齐
-	input = input.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR); // 左对齐
-	input = input.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR); // 右对齐
 
 	input = input.replace(FONT_SIZE_REGX, FONT_SIZE_STR); // 字号
 
 	input = replaceColor(input); // 颜色
-	// input = replaceLink(input); // 链接
-	// input = replaceImg(input); // 图像
 
 	input = input.replace(H6_REGX, H6_STR); // 六级标题
 	input = input.replace(H5_REGX, H5_STR); // 五级标题

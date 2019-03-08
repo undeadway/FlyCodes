@@ -176,6 +176,7 @@ const TABLE_REGEX = /(\|(.)+\|\n)+/,
 const TR_JOIN = "</tr><tr>",
 	TD_JOIN = "</td><td>",
 	TD_START = "<td>",
+	TD_END = "</td>",
 	TABLE_START = '<table class="table"><tr>',
 	TABLE_END = '</tr></table>';
 function replaceTable(input) {
@@ -188,7 +189,7 @@ function replaceTable(input) {
 			if (i === 1) return;
 			if (String.isEmpty(line)) return;
 			line = line.slice(1, line.length - 1); // 去掉最开始和最后的 |
-			output.push(TD_START + line.replace(VERTICAL_BAR, TD_JOIN));
+			output.push(TD_START + line.replace(VERTICAL_BAR, TD_JOIN) + TD_END);
 		});
 
 		let table = TABLE_START + output.join(TR_JOIN) + TABLE_END;

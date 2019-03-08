@@ -1,6 +1,6 @@
 {
   "name": "flycodes",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A parser of rich text editor.",
   "main": "src/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "http://wpl.waygc.net/prj=FlyCodes",
   "dependencies": {
-    "coralian": "0.0.10"
+    "coralian": "0.0.12"
   },
   "devDependencies": {}
 }

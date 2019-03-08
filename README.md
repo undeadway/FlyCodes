@@ -8,8 +8,8 @@
 FlyCodes.js 用于前台使用，node 端直接`require("flycodes")`就可以直接使用。
 
 ### 安装
-node 端只要执行`npm install flycodes`命令即可。
-前端，将dist文件夹下的两个文件复制到js目录中即可。
+node 端只要执行`npm install flycodes`命令即可。  
+前端，将dist文件夹下的两个文件复制到js目录中即可。  
 
 ### HitOn
 
@@ -27,8 +27,8 @@ The output are the files of `FlyCodes.js` and `HitOn.js`.
 `FlyCodes.js` used for client side, node side could used as `require("flycodes")` immediately.
 
 ### Install
-At the node side, to run the command of `npm install flycodes`.
-At the client, to copy the output files of dist folder to script folder.
+At the node side, to run the command of `npm install flycodes`.  
+At the client, to copy the output files of dist folder to script folder.  
 
 ### HitOn
 

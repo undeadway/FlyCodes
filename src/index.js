@@ -163,6 +163,7 @@ Coralian.setToGlobal("FlyCodes", {
 		}
 
 		try {
+			src = src.replace(/<((.|\s)+?)>/g, "&lt;$1&gt;"); // 去掉所有<xxx> 结构
 			src = src.replace(/\r\n/g, "\n"); // 把 \r 给全部去掉，免得出现各种奇怪的东西
 			src = src.replace(/\r/g, "\n");
 			let parse = proxy[name];

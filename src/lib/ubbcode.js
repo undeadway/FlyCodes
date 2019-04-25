@@ -362,35 +362,6 @@ const BLOCK_OUT_STR = "[$1$2][$3$4",
 	TAIL_EXE_STR1_2 = "<$2$3",
 	FONT_REGX_FORMAT_STR = "\\[font=%s\\]";
 
-const BUILT_IN_OBJS = [
-	{
-		regexp: /\[pre\]((.|\s)*?)\[\/pre\]/,
-		tag: {
-			start: "[pre]",
-			end: "[/pre]",
-			html: "pre"
-		}
-	},
-	{
-		regexp: /\[phonics\]((.|\s)*?)\[\/phonics\]/,
-		tag: {
-			start: '[phonics]',
-			end: '[/phonics]',
-			html: 'ruby'
-		},
-		replace: {
-			start: {
-				from: /\(/g,
-				to: "<rp>(</rp> <rt>"
-			},
-			end: {
-				from: /\)/g,
-				to: "</rt><rp>)</rp>"
-			}
-		}
-	}
-]
-
 module.exports = commons = require("./commons").create((str) => {
 
 	// 在把 \n 替换为 <br /> 之前把包括 quote 等在内的块层级之间的换行符给去掉
@@ -430,7 +401,34 @@ module.exports = commons = require("./commons").create((str) => {
 
 	return str;
 }, {
-		object: BUILT_IN_OBJS,
+		object: [
+			{
+				regexp: /\[pre\]((.|\s)*?)\[\/pre\]/,
+				tag: {
+					start: "[pre]",
+					end: "[/pre]",
+					html: "pre"
+				}
+			},
+			{
+				regexp: /\[phonics\]((.|\s)*?)\[\/phonics\]/,
+				tag: {
+					start: '[phonics]',
+					end: '[/phonics]',
+					html: 'ruby'
+				},
+				replace: {
+					start: {
+						from: /\(/g,
+						to: "<rp>(</rp><rt>"
+					},
+					end: {
+						from: /\)/g,
+						to: "</rt><rp>)</rp>"
+					}
+				}
+			}
+		],
 		aspect: {
 			simpleLineCode: {
 				regexp : /\[code\]((.)*?)\[\/code\]/,

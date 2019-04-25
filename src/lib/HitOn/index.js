@@ -17,6 +17,8 @@ function replaceQuote(input) {
 		let legend = hasQuotTtl ? quotTtlLn.slice(1, quotTtlLn.length - 1) : STRING_QUOTE;
 		let outTxt = hasQuotTtl ? quotTxt.slice(indexNL + 1) : quotTxt;
 
+		outTxt = replaceQuote(outTxt); // 递归查找看是否有多重引用
+
 		input = input.replace(MAIN_QUOT_REGX, `<fieldset><legend>${legend}</legend>${outTxt}</fieldset>`);
 	}
 
@@ -347,9 +349,37 @@ module.exports = commons = require("../commons").create((input) => {
 
 	return input;
 }, {
+		object : [
+			{
+				regexp: /\[\[((.|\s)*?)\]\]/,
+				tag: {
+					start: "[[",
+					end: "]]",
+					html: "pre"
+				}
+			},
+			{
+				regexp: /{{((.|\s)*?)}}/,
+				tag: {
+					start: '{{',
+					end: '}}',
+					html: 'ruby'
+				},
+				replace: {
+					start: {
+						from: /\(/g,
+						to: "<rp>(</rp><rt>"
+					},
+					end: {
+						from: /\)/g,
+						to: "</rt><rp>)</rp>"
+					}
+				}
+			}
+		],
 		aspect: {
 			simpleLineCode: {
-				regexp: /`(\S+?)`/,
+				regexp: /`([^`]+?)`/,
 				tag: {
 					start: "`",
 					end: "`"

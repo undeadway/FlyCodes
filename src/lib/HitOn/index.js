@@ -320,10 +320,10 @@ module.exports = commons = require("../commons").create((input) => {
 	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
 	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
 
-	input = link.after(input);
-	input = image.after(input);
 	input = align.after(input);
 	input = escape.after(input);
+	input = image.after(input);
+	input = link.after(input);
 
 	input = replaceQuote(input); // 引用
 	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
@@ -349,7 +349,7 @@ module.exports = commons = require("../commons").create((input) => {
 }, {
 		aspect: {
 			simpleLineCode: {
-				regexp: /`((^`)+?)`/,
+				regexp: /`(\S+?)`/,
 				tag: {
 					start: "`",
 					end: "`"

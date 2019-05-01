@@ -107,11 +107,6 @@ module.exports = {
 						str = replaceObjects(str, o);
 					});
 				}
-				if (object) { // 定制对象处理
-					Array.forEach(object, (i, o) => {
-						str = replaceObjects(str, o);
-					});
-				}
 
 				// 插片后处理
 				Array.forEach(aspects, (i, a) => {

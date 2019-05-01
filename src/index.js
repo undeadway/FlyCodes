@@ -49,7 +49,7 @@ function parseCodes(arg) {
 					let code = RegExp[arg.code];
 					let codeWithLang = arg.withLang(name, code);
 
-					input = input.replace(codeWithLang, "{toCode" + codes.length + "}");
+					input = input.replace(codeWithLang, "{codes~" + codes.length + "}");
 					code = highLighter(code, name);
 
 					codes.push(code);
@@ -60,7 +60,7 @@ function parseCodes(arg) {
 		after: (input) => {
 			if (highLighter) {
 				Array.forEach(codes, (i, obj) => {
-					input = input.replace("{toCode" + i + "}", obj);
+					input = input.replace("{codes~" + i + "}", obj);
 				});
 			}
 			return input;
@@ -163,7 +163,7 @@ Coralian.setToGlobal("FlyCodes", {
 		}
 
 		try {
-			src = src.replace(/<((.|\s)+?)>/g, "&lt;$1&gt;"); // 去掉所有<xxx> 结构
+			// src = src.replace(/<((.|\s)+?)>/g, "&lt;$1&gt;"); // 去掉所有<xxx> 结构
 			src = src.replace(/\r\n/g, "\n"); // 把 \r 给全部去掉，免得出现各种奇怪的东西
 			src = src.replace(/\r/g, "\n");
 			let parse = proxy[name];

@@ -18,6 +18,9 @@ HitOn是我自己开发的一个类Markdown文本标记语言。
 虽然HitOn 可以独立于FlyCodes使用，但FlyCodes已经包含HitOn的实现，所以如果已经下载了`FlyCodes.js`，则不用再下载`HitOn.js`。  
 node 端的 `HitOn`没有单独创建工程，直接引用`FlyCodes`或者将编译好的 `HitOn.js`导入到工程中即可。
 
+#### 旧版本兼容
+HitOn维持旧版本兼容。
+
 
 # English
 

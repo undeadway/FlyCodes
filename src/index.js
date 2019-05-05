@@ -4,14 +4,15 @@
  *
  * 内置了 UBB 解析和 HitOn 解析两种解析方式
  */
-let HITON_STR = "HitOn";
+const util = require("./lib/util");
+const HITON_STR = "HitOn";
 
-let parsers = {
+const parsers = {
 	ubbcode: require("./lib/ubbcode"),
 	HitOn: require("./lib/HitOn/")
 };
 
-let proxy = new Proxy(parsers, {
+const proxy = new Proxy(parsers, {
 	get: (target, key) => {
 		if (String.startsWith(key, HITON_STR) && key !== HITON_STR) {
 			return require("./lib/HitOn/dist/" + key.split("_")[1]);
@@ -38,34 +39,23 @@ var CODES_OBJ = {
 
 function parseCodes(arg) {
 
-	let codes = [];
+	let codes = util.AspectBase('codes');
+	codes.before = input => {
+		if (highLighter) {
+			while (arg.regexp.test(input)) {
 
-	return {
-		before: (input) => {
-			if (highLighter) {
-				while (arg.regexp.test(input)) {
+				let name = RegExp[arg.name];
+				let code = RegExp[arg.code];
+				let codeWithLang = arg.withLang(name, code);
 
-					let name = RegExp[arg.name];
-					let code = RegExp[arg.code];
-					let codeWithLang = arg.withLang(name, code);
-
-					input = input.replace(codeWithLang, "{codes~" + codes.length + "}");
-					code = highLighter(code, name);
-
-					codes.push(code);
-				}
+				let outCode = highLighter(code, name);
+				input = codes.replace(input, codeWithLang, outCode);
 			}
-			return input;
-		},
-		after: (input) => {
-			if (highLighter) {
-				Array.forEach(codes, (i, obj) => {
-					input = input.replace("{codes~" + i + "}", obj);
-				});
-			}
-			return input;
 		}
-	}
+		return input;
+	};
+
+	return codes;
 }
 
 const FACE_NAME = ['黑线', '怒', '眼泪', '炸毛', '蛋定', '微笑', '汗', '囧', '卧槽', '坏笑', '鼻血', '大姨妈', '瞪眼', '你说啥', '一脸血', '害羞',

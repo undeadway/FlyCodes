@@ -1,7 +1,6 @@
 ﻿
 let EMPTY_STRING = String.BLANK;
-let isNumber = Number.isNumber,
-	formatFileSize = Coralian.Formatter.formatFileSize;
+const util = require("./util");
 
 let replaceImg = (function () {
 
@@ -224,31 +223,39 @@ function replaceUrl(str) {
 
 let replaceH5Video = (function () {
 
-	let h5VMap = {
-		bilibili: function (id, page) {
+	let h5QUeryMap = {
+		bilibili: function ({ url, page }) {
 			page = page || 1;
-			return '<iframe class="h5video" src="https://www.bilibili.com/blackboard/player.html?aid=' + id.replace("av", '') +
-				//'&page=' + page + 
-				'" scrolling="no" border="0" framespacing="0" frameborder="no"></iframe>';
+
+			let src = 'https://www.bilibili.com/blackboard/player.html?aid=' + url.replace("av", '');
+			// let args = 'scrolling="no" border="0" framespacing="0"';
+			let args = {
+				scrolling: 'no',
+				border: 0,
+				framespacing: 0
+			};
+
+			return util.compireH5Video(url, args);
 		},
-		youku: function (id) {
-			return '<iframe  class="h5video" src="http://player.youku.com/embed/' + id + '" frameborder="no"></iframe>'
+		youku: function ({ url }) {
+			let src = `http://player.youku.com/embed/${url}`;
+
+			return util.compireH5Video(src);
+		},
+		common: (url, args) => {
+			return util.compireH5Video(url, args);
 		}
 	};
-	const REGEX_H5VIDEO = /\[h5v=([^\]]+)]([^\]]+)\[\/h5v\]/;
-	const H5_FORMAT = "[h5v=%1]%2%3[/h5v]";
+	const REGEX_H5VIDEO_ARGS = /\[video=([^\]]+)\]([^\]]+)\[\/video\]/, H5_FORMAT_ARGS = "[video=%1]%2[/video]", NAME_REGX = /(([^\]]+))*\(([^\]]+)\)/;
+	const REGEX_H5VIDEO = /\[video\]([^\]]+)\[\/video\]/, H5_FORMAT = "[video]%2[/video]";
 
-	function __replace(str, input, name, id, page) {
+	function __replace(str, input, title, name, url, args) {
 
-		let output = h5VMap[name](id, page);
+		let h5Query = name ? (h5QUeryMap[name] || h5QUeryMap.common) : h5QUeryMap.common;
+		let output = h5Query(url, args);
 
-		if (page) {
-			page = "," + page;
-		}
-
-		input = input.replace("%1", name);
-		input = input.replace("%2", id);
-		input = input.replace("%3", page);
+		input = input.replace("%1", title);
+		input = input.replace("%2", url);
 
 		return str.replace(input, output);
 	}
@@ -257,13 +264,28 @@ let replaceH5Video = (function () {
 
 		if (arguments.length === 1) {
 
-			while ((matched = str.match(REGEX_H5VIDEO)) !== null) {
-				let name = matched[1];
+			while((matched = str.match(REGEX_H5VIDEO)) !== null) {
+				str = __replace(str, H5_FORMAT, null, null, matched[1]);
+			}
+
+			while ((matched = str.match(REGEX_H5VIDEO_ARGS)) !== null) {
+				let title = name = matched[1];
 				let value = matched[2].split(",");
-				let id = value[0];
+				let url = value[0];
 				let page = value[1] || '';
 
-				str = __replace(str, H5_FORMAT, name, id, page);
+				let args = {};
+				if (page) {
+					args.page = page;
+				}
+
+				let argMarch = title.match(NAME_REGX);
+				if (argMarch !== null) {
+					name = argMarch[1];
+					util.splitEqualToObject(argMarch[3].split(","), args);
+				}
+
+				str = __replace(str, H5_FORMAT_ARGS, title, name, url, args);
 			}
 		} else {
 			// 这里是留给原FLASH格式的接口
@@ -274,17 +296,16 @@ let replaceH5Video = (function () {
 	}
 })();
 
-const BILIBILI_FLASH_REGEX = /\[flash=bilibili]([^\[]+)\.swf\?aid=([^\[]+)\[\/flash]/,
-	NORMAL_FLASH_REGEX = /\[flash]([^\[]+)\[\/flash]/;
-
-const NORMAL_FLASH_STR = '<embed src="$1" allowFullScreen="true" name="movie" value="opaque" width="634" height="440" type="application/x-shockwave-flash" />',
-	YOUKU_STR = 'youku',
-	BILIBILI_STR = 'bilibili';
+const BILIBILI_FLASH_REGEX = /\[flash=bilibili]([^\[]+)\.swf\?aid=([^\[]+)\[\/flash]/;
+const NORMAL_FLASH_REGEX = /\[flash]([^\[]+)\[\/flash]/;
+const NORMAL_FLASH_STR = '<embed src="$1" allowFullScreen="true" name="movie" value="opaque" width="634" height="440" type="application/x-shockwave-flash" />';
+const YOUKU_STR = 'youku';
+const BILIBILI_STR = 'bilibili';
 
 function replaceFlash(str) {
 
-	// 将FLASH全部替换为H5播放器
-	while ((matched = str.match(BILIBILI_FLASH_REGEX)) !== null) { // B 站
+	// 将 B 站的FLASH全部替换为H5播放器
+	while ((matched = str.match(BILIBILI_FLASH_REGEX)) !== null) {
 		let url = matched[1];
 		let values = matched[2];
 		let valArr = values.split("&amp;page=");
@@ -294,7 +315,7 @@ function replaceFlash(str) {
 
 	while ((matched = str.match(NORMAL_FLASH_REGEX)) !== null) {
 		let url = matched[1];
-		let input = '[flash]' + url + '[/flash]'
+		let input = `[flash]${url}[/flash]`;
 		if (String.contains(url, YOUKU_STR)) { // 优酷
 			let urls = url.split("/");
 			str = replaceH5Video(str, input, YOUKU_STR, urls[urls.length - 2]);
@@ -431,10 +452,10 @@ module.exports = commons = require("./commons").create((str) => {
 		],
 		aspect: {
 			simpleLineCode: {
-				regexp : /\[code\]((.)*?)\[\/code\]/,
-				tag : {
-					start : "[code]",
-					end : "[/code]"
+				regexp: /\[code\]((.)*?)\[\/code\]/,
+				tag: {
+					start: "[code]",
+					end: "[/code]"
 				}
 			},
 		}

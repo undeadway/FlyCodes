@@ -9,8 +9,6 @@
  * clear
  */
 var newXmlWrapper = Coralian.dom.newXmlWrapper;
-var htmlEscape = Coralian.ReplaceHolder.htmlEscape,
-	EMPTY_STRING = String.BLANK;
 var isNumber = Number.isNumber,
 	formatFileSize = Coralian.Formatter.formatFileSize;
 let getPlugIn = require("./plugin");

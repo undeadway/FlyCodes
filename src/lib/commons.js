@@ -1,3 +1,6 @@
+
+const util = require("./util");
+
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
 
@@ -25,42 +28,31 @@ function replaceObjects(str, arg) {
 const BUILT_IN_ASPECTS = {
 	simpleLineCode: (arg) => {
 
-		var lineCodes = [];
-
-		return {
-			before: function (input) {
-				while (arg.regexp.test(input)) {
-					let obj = RegExp.$1;
-					input = input.replace(arg.tag.start + obj + arg.tag.end, "{lineCode" + lineCodes.length + "}");
-					lineCodes.push("<code class=\"code\">" + obj + "</code>");
-				}
-				return input;
-			},
-			after: function (input) {
-				Array.forEach(lineCodes, function (i, obj) {
-					input = input.replace(new RegExp('\\{lineCode' + i + '\\}', 'g'), obj);
-				});
-				return input;
+		let lineCode = util.AspectBase('linecode');
+		lineCode.before = input => {
+			while (arg.regexp.test(input)) {
+				let obj = RegExp.$1;
+				let part = arg.tag.start + obj + arg.tag.end;
+				let output = `<code class="code">${obj}</code>`;
+				input = lineCode.replace(input, part, output);
 			}
-		}
+			return input;
+		};
+
+		return lineCode;
 	},
 	escapeSequence: (arg) => {
-		var escapeSequences = [];
-		return {
-			before: function (input) {
-				while (arg.test(input)) {
-					input = input.replace(arg, '{backslash' + escapeSequences.length + '}');
-					escapeSequences.push(RegExp.$1);
-				}
-				return input;
-			},
-			after: function (input) {
-				Object.forEach(escapeSequences, function (i, obj) {
-					input = input.replace(new RegExp('\\{backslash' + i + '\\}', 'g'), obj);
-				});
-				return input;
+
+		let backSlash = util.AspectBase('backslash');
+		backSlash.before = input => {
+			while (arg.test(input)) {
+				let output = RegExp.$1;
+				input = backSlash.replace(input, arg, output);
 			}
-		}
+			return input;
+		};
+
+		return backSlash;
 	}
 };
 

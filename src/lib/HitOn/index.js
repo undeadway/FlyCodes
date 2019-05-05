@@ -1,4 +1,6 @@
 
+const util = require("./../util");
+
 const MAIN_QUOT_REGX = /\n(\n(>(.*)\n)+)/,
 	NL_RT_ANGLE_GLOBAL_REGX = /\n>/g;
 const STRING_QUOTE = "引用";
@@ -87,91 +89,83 @@ function replaceColor(input) {
 	return input;
 }
 
-/**
- * #(url|txt|title|target)
- *
- * @param {Object} input
- */
-const LINK_TAG_REGX = /#\(((.|\s)*?)\)/;
-function replaceLink(input) {
+const LINK_REGX = /\[(#|@|\$|V|A)\]\(((.|\s)*?)\)/;
+function replaceSrcLinks() {
 
-	let links = [];
+	let links = util.AspectBase('links');
+	links.before = input => {
+		while (LINK_REGX.test(input)) {
+			let tag = RegExp.$1;
+			let value = RegExp.$2;
 
-	return {
-		before: input => {
-			while (LINK_TAG_REGX.test(input)) {
-				var inner = RegExp.$1;
-				var splits = inner.split("|");
-				var url = splits[0]
-				var outs = '<a href="' + url + '"';
-				outs += ' title="' + (splits.length === 4 ? (splits[2] || url) : url) + '"';
+			let output = ReplaceHolder[tag](value);
 
-				var target = splits[splits.length === 4 ? 3 : 2];
-				if (target) {
-					outs += ' target="_' + target + '"';
-				}
-				outs += '>';
-				outs += splits[1] || url;
-				outs += '</a>';
-				outs = outs.replace(/<\/?em>/g, "/");
-
-				input = input.replace("#(" + inner + ")", `{links~${links.length}}`);
-				links.push(outs);
-			}
-			return input;
-		},
-		after: input => {
-			Array.forEach(links, (i, e) => {
-				input = input.replace(`{links~${i}}`, e);
-			})
-			return input;
+			input = links.replace(input, `[${tag}](${value})`, output);
 		}
-	}
-}
-
-/**
- *  $(url|title|width|height)
- *
- * @param {Object} input
- */
-const IMG_TAG_REGX = /\$\(((.|\s)*?)\)/;
-function replaceImage(input) {
-
-	let images = [];
-
-	return {
-		before: input => {
-			while (IMG_TAG_REGX.test(input)) {
-				var inner = RegExp.$1;
-				var splits = inner.split("|");
-				var str = splits[0].replace(/<\/?(em)>/g, "/");
-				str = str.replace(/<\/?(ins)>/g, "_");
-				str = str.replace(/<\/?(del)>/g, "-");
-				var outs = '<img src="' + str + '"';
-				outs += ' title="' + (splits[1] || str) + '"';
-
-				if (splits[2]) {
-					outs += ' width="' + splits[2] + '"';
-				}
-
-				if (splits[3]) {
-					outs += ' height="' + splits[3] + '"';
-				}
-				outs += ' onload="styles.Image.resize(this)" onclick="styles.Image.protoSize(this)" />';
-
-				input = input.replace("$(" + inner + ")", `{images~${images.length}}`);
-				images.push(outs);
-			}
-			return input;
-		},
-		after: input => {
-			Array.forEach(images, (i, e) => {
-				input = input.replace(`{images~${i}}`, e);
-			})
-			return input;
-		}
+		return input;
 	};
+
+	return links;
 }
+
+const ReplaceHolder = {
+	'#': input => { // 链接  [#](url|txt|title|target)
+
+		let splits = input.split("|");
+		let url = splits[0];
+		let txt = splits[1] || url;
+		let title = (splits.length === 4 ? (splits[2] || url) : url);
+		let target = splits[splits.length === 4 ? 3 : 2];
+
+		let outs = `<a href="${url}" title="${title}"`;
+		if (target) {
+			outs += ` target="_${target}"`;
+		}
+		outs += `>${txt}</a>`;
+
+		return outs;
+	},
+	"@": input => { // 邮件  [@](url|title)
+		let splits = input.split("|");
+		let url = splits[0];
+		let title = splits[1] || url;
+
+		return `<a href="mailto:${url}">${title}</a>`;
+	},
+	"$": input => { // 图像  [$](url|title|width|height)
+		var splits = input.split("|");
+
+		var str = splits[0];
+		
+		let title = splits[1] || str;
+
+		var outs = `<img src="${str}" title="${title}"`;
+
+		if (splits[2]) {
+			outs += ' width="' + splits[2] + '"';
+		}
+
+		if (splits[3]) {
+			outs += ' height="' + splits[3] + '"';
+		}
+		outs += ' onload="styles.Image.resize(this)" onclick="styles.Image.protoSize(this)" />';
+
+		return outs;
+	},
+	"V": input => { // 视频  [V](url)
+
+		let inputArr = input.split("|");
+		let url = inputArr.shift();
+		let args = {};
+
+		util.splitEqualByInputToObject(inputArr, args);
+
+		return util.compireH5Video(url, args);
+	},
+	"A": input => { // 音频  [A](url)
+		return util.compireH5Audio(input);
+	}
+};
 
 const TABLE_REGEX = /(\|(.)+\|\n)+/,
 	VERTICAL_BAR = /\|/g;
@@ -205,73 +199,47 @@ function replaceTable(input) {
 const ESCAPER_REGX = /\\\//;
 function replaceEscapers() {
 
-	let escapes = [];
-
-	return {
-		before: input => {
-
-			while ((matches = input.match(ESCAPER_REGX)) !== null) {
-
-				let part = matches[0];
-				input = input.replace(part, `{escape~${escapes.length}}`);
-				escapes.push(part);
-			}
-
-			return input;
-		},
-		after: input => {
-
-			Array.forEach(escapes, (i, e) => {
-				input = input.replace(`{escape~${i}}`, e);
-			});
-
-			return input;
+	let escapes = util.AspectBase('escapes');
+	escapes.before = input => {
+		while ((matches = input.match(ESCAPER_REGX)) !== null) {
+			input = escapes.replace(input, matches[0], part);
 		}
-	};
+
+		return input;
+	}
+	return escapes;
 }
 
 function replaceAlign() {
 
-	let align = [];
+	let align = util.AspectBase('align');
 
-	return {
-		before: input => {
+	align.before = input => {
+		while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
 
-			while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
-
-				let part = matches[0];
-				let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
-				input = input.replace(part, `{align~${align.length}}`);
-				align.push(str);
-			}
-
-			while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
-
-				let part = matches[0];
-				let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
-				input = input.replace(part, `{align~${align.length}}`);
-				align.push(str);
-			}
-
-			while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
-
-				let part = matches[0];
-				let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
-				input = input.replace(part, `{align~${align.length}}`);
-				align.push(str);
-			}
-
-			return input;
-		},
-		after: input => {
-
-			Array.forEach(align, (i, e) => {
-				input = input.replace(`{align~${i}}`, e);
-			});
-
-			return input;
+			let part = matches[0];
+			let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
+			input = align.replace(input, part, str);
 		}
+
+		while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
+
+			let part = matches[0];
+			let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
+			input = align.replace(input, part, str);
+		}
+
+		while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
+
+			let part = matches[0];
+			let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
+			input = align.replace(input, part, str);
+		}
+
+		return input;
 	};
+
+	return align;
 }
 
 const COMMENT_REGX = /\/\*((.|\s)*?)\*\//g,
@@ -305,17 +273,15 @@ const ITALIC_STR = "<em>$1</em>",
 	H2_STR = "<h1 class=\"h2\">$1</h1>",
 	H1_STR = "<h1 class=\"h1\">$1</h1>";
 
-module.exports = commons = require("../commons").create((input) => {
+module.exports = commons = require("./../commons").create((input) => {
 
 	input = input.replace(COMMENT_REGX, String.BLANK); // 去掉注释
 
-	let link = replaceLink(); // 连接
-	let image = replaceImage(); // 图像
+	let link = replaceSrcLinks(); // 外部连接
 	let align = replaceAlign(); // 对齐
 	let escape = replaceEscapers(); // 转义字符
 
 	input = link.before(input);
-	input = image.before(input);
 	input = escape.before(input);
 	input = align.before(input);
 
@@ -324,7 +290,6 @@ module.exports = commons = require("../commons").create((input) => {
 
 	input = align.after(input);
 	input = escape.after(input);
-	input = image.after(input);
 	input = link.after(input);
 
 	input = replaceQuote(input); // 引用
@@ -349,7 +314,7 @@ module.exports = commons = require("../commons").create((input) => {
 
 	return input;
 }, {
-		object : [
+		object: [
 			{
 				regexp: /\[\[((.|\s)*?)\]\]/,
 				tag: {

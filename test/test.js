@@ -7,7 +7,7 @@ var fs = require("fs");
 var src = fs.readFileSync("./test/file", "utf-8");
 FlyCodes.setHighLighter(FlyHighLighter.execute);
 
-let output = FlyCodes.toHTML(src, "HitOn_0.0.1");
+let output = FlyCodes.toHTML(src, "HitOn");
 
 let html = `<html><head>
 <title>测试</title>

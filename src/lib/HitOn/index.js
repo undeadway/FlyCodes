@@ -158,7 +158,7 @@ const ReplaceHolder = {
 		let url = inputArr.shift();
 		let args = {};
 
-		util.splitEqualByInputToObject(inputArr, args);
+		util.splitEqualToObject(inputArr, args);
 
 		return util.compireH5Video(url, args);
 	},

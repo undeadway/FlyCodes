@@ -282,7 +282,7 @@ let replaceH5Video = (function () {
 				let argMarch = title.match(NAME_REGX);
 				if (argMarch !== null) {
 					name = argMarch[1];
-					util.splitEqualToObject(argMarch[3].split(","), args);
+					util.parseEqualToObject(argMarch[3].split(","), args);
 				}
 
 				str = __replace(str, H5_FORMAT_ARGS, title, name, url, args);

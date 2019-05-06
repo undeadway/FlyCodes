@@ -9,6 +9,7 @@ function replaceObjects(str, arg) {
 	while ((matched = str.match(arg.regexp)) !== null) {
 
 		let htmlTag = arg.tag.html;
+		let attrs = util.compireObjectToEqualString(arg.tag.attrs);
 		let inner = matched[1];
 		let input = arg.tag.start + inner + arg.tag.end;
 
@@ -17,7 +18,7 @@ function replaceObjects(str, arg) {
 			inner = inner.replace(arg.replace.end.from, arg.replace.end.to);
 		}
 
-		let output = `<${htmlTag}>${inner}</${htmlTag}>`;
+		let output = `<${htmlTag}${attrs}>${inner}</${htmlTag}>`;
 
 		str = str.replace(input, output);
 	}

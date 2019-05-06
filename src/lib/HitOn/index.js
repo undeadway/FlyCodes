@@ -158,7 +158,7 @@ const ReplaceHolder = {
 		let url = inputArr.shift();
 		let args = {};
 
-		util.splitEqualToObject(inputArr, args);
+		util.parseEqualToObject(inputArr, args);
 
 		return util.compireH5Video(url, args);
 	},
@@ -320,7 +320,10 @@ module.exports = commons = require("./../commons").create((input) => {
 				tag: {
 					start: "[[",
 					end: "]]",
-					html: "pre"
+					html: "pre",
+					attrs : {
+						'class' : 'pre'
+					}
 				}
 			},
 			{

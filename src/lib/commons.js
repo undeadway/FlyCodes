@@ -9,7 +9,7 @@ function replaceObjects(str, arg) {
 	while ((matched = str.match(arg.regexp)) !== null) {
 
 		let htmlTag = arg.tag.html;
-		let attrs = util.compireObjectToEqualString(arg.tag.attrs);
+		let attrs = util.compireObjectToXmlAtruibute(arg.tag.attrs);
 		let inner = matched[1];
 		let input = arg.tag.start + inner + arg.tag.end;
 

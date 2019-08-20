@@ -27,7 +27,7 @@ function replaceQuote(input) {
 	return input;
 }
 
-var replaceList = (function () {
+const replaceList = (function () {
 
 	const UL_REGEX = /(\*+\. (.)+\n)+/,
 		OL_1_REGEX = /([0-9]+\. (.)+\n)+/,
@@ -273,7 +273,7 @@ const ITALIC_STR = "<em>$1</em>",
 	H2_STR = "<h1 class=\"h2\">$1</h1>",
 	H1_STR = "<h1 class=\"h1\">$1</h1>";
 
-module.exports = commons = require("./../commons").create((input) => {
+const commons = module.exports = require("./../commons").create((input) => {
 
 	input = input.replace(COMMENT_REGX, String.BLANK); // 去掉注释
 

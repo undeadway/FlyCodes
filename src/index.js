@@ -5,7 +5,7 @@
  * 内置了 UBB 解析和 HitOn 解析两种解析方式
  */
 const util = require("./lib/util");
-const HITON_STR = "HitOn";
+const HITON_STR = "HitOn", UBB_STR = "UBB";
 
 const parsers = {
 	ubbcode: require("./lib/ubbcode"),
@@ -15,16 +15,14 @@ const parsers = {
 const proxy = new Proxy(parsers, {
 	get: (target, key) => {
 		if (String.startsWith(key, HITON_STR) && key !== HITON_STR) {
-			return require("./lib/HitOn/dist/" + key.split("_")[1]);
+			return require("./lib/HitOn/dist/" + key.split("_")[1]); // 这里是为了保证 HitOn可以向前兼容
 		} else {
 			return target[key];
 		}
 	}
 });
 
-let highLighter = null;
-
-var CODES_OBJ = {
+const CODES_OBJ = {
 	regexp: /```(.*[\r\n]+)((.|\s)*?)```/,
 	code: "$2",
 	name: "$1",
@@ -36,6 +34,47 @@ var CODES_OBJ = {
 		}
 	}
 };
+
+const basePlugIn = {
+	ubbcode: {
+		aspect: [
+			{ // 代码
+				method: parseCodes,
+				object: {
+					regexp: /\[code(=((.|\s)*?))?\]((.|\s)*?)\[\/code\]/,
+					code: "$4",
+					name: "$2",
+					withLang: (name, code) => {
+						if (name) {
+							return `[code=${name}]${code}[/code]`;
+						} else {
+							return `[code]${code}[/code]`;
+						}
+					}
+				}
+			}
+		],
+	//	queue: queues
+	},
+	HitOn: {
+		aspect: [
+			{ // 代码
+				method: parseCodes,
+				object: CODES_OBJ
+			}
+		],
+	//	queue: queues
+	}
+};
+
+let highLighter = null;
+
+function getPlugIn(name) {
+	if (String.startsWith(name, HITON_STR)) {
+		name = HITON_STR;
+	}
+	return basePlugIn[name];
+}
 
 function parseCodes(arg) {
 
@@ -58,91 +97,22 @@ function parseCodes(arg) {
 	return codes;
 }
 
-const FACE_NAME = ['黑线', '怒', '眼泪', '炸毛', '蛋定', '微笑', '汗', '囧', '卧槽', '坏笑', '鼻血', '大姨妈', '瞪眼', '你说啥', '一脸血', '害羞',
-	'大好', '喝茶看戏', '美～', '笑岔', '中箭', '呕', '撇嘴', '碎掉', '吐舌头', '纳尼', '泪流满面', '升仙', '扭曲', '闪闪亮', '山', '寨', '基',
-	'惊', '头顶青天', '不错', '吃屎', '牛', '严肃', '作死', '帅' /*, '僵尸', '吸血鬼', '喵'*/, '腹黑', '喜闻乐见', '呵呵呵', '！', '？', '吓尿了',
-	'嘁', '闪电', "S1", "战斗力爆表", "贼笑", "嗯...", "喵", "奸笑"
-];
-const FONT_NAMES = {
-	'宋体': 'song',
-	'仿宋': 'fsong',
-	'楷体': 'kai',
-	'魏碑': 'weibei',
-	'隶书': 'lishu',
-	'黑体': 'hei',
-	'Arial': 'arial',
-	'Courier New': 'couriernew',
-	'MS PGothic': 'mspgothic',
-	'MS PMincho': 'mspmincho',
-	'Tahoma': 'tahoma',
-	'Times New Roman': 'timesnewroman'
-};
-
-let queues = [
-	(input) => { // 表情
-		for (var i = 0, len = FACE_NAME.length; i < len; i++) {
-			var name = FACE_NAME[i];
-			var regExp = new RegExp("\\[" + name + "\\]", "g");
-			if (regExp.test(input)) {
-				input = input.replace(regExp, '<img src="/res/flies/face/' + (100 + i) + '.gif" title="' + name + '" />');
-			}
-		}
-
-		return input;
-	},
-	(str) => { // 字体
-		for (var k in FONT_NAMES) {
-			var regExp = new RegExp("\\[font=" + k + "\\]", "g");
-			if (regExp.test(str)) {
-				str = str.replace(regExp, '<span class="font_' + FONT_NAMES[k] + '">');
-			}
-		}
-		return str;
-	}
-];
-
-let basePlugIn = {
-	ubbcode: {
-		aspect: [
-			{ // 代码
-				method: parseCodes,
-				object: {
-					regexp: /\[code(=((.|\s)*?))?\]((.|\s)*?)\[\/code\]/,
-					code: "$4",
-					name: "$2",
-					withLang: (name, code) => {
-						if (name) {
-							return `[code=${name}]${code}[/code]`;
-						} else {
-							return `[code]${code}[/code]`;
-						}
-					}
-				}
-			}
-		],
-		queue: queues
-	},
-	HitOn: {
-		aspect: [
-			{ // 代码
-				method: parseCodes,
-				object: CODES_OBJ
-			}
-		],
-		queue: queues
-	}
-};
-
-function getPlugIn(name) {
-	if (String.startsWith(name, HITON_STR)) {
-		name = HITON_STR;
-	}
-	return basePlugIn[name];
-}
-
 Coralian.setToGlobal("FlyCodes", {
-	setHighLighter : input => {
+	lang: {
+		HITON: HITON_STR,
+		UBB: UBB_STR
+	},
+	setHighLighter: input => {
 		highLighter = input;
+	},
+	addPlugIn: (lang, adds) => {
+
+		let p = basePlugIn[lang];
+
+		Object.addAll(adds.aspect, p.aspect);
+		Object.addAll(adds.queue, p.queue);
+		Object.addAll(adds.object, p.object);
+
 	},
 	toHTML: (src, name) => {
 

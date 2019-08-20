@@ -1,15 +1,18 @@
 
 exports.compireH5Video = (input, args) => {
 
-	let result = `<iframe class="h5video" src="${input}"`;
-
-	result += compireObjectToEqualString(args) + ' frameborder="no"></iframe>';
-
-	return result;
+	return compireH5Object(input, args, 'iframe', 'h5video');
 };
 
 exports.compireH5Audio = (input, args) => {
 	return input;
+}
+
+function compireH5Object(input, args, tag, className) {
+
+	let result = compireObjectToXmlAtruibute(args);
+
+	return `<${tag} class="${className}" src="${input}" ${result}></${tag}>`;
 }
 
 exports.parseEqualToObject = (input, obj) => {
@@ -19,7 +22,7 @@ exports.parseEqualToObject = (input, obj) => {
 	}
 };
 
-function compireObjectToEqualString(input) {
+function compireObjectToXmlAtruibute(input) {
 
 	let str = String.BLANK;
 
@@ -31,7 +34,7 @@ function compireObjectToEqualString(input) {
 	return str;
 }
 
-exports.compireObjectToEqualString = compireObjectToEqualString;
+exports.compireObjectToXmlAtruibute = compireObjectToXmlAtruibute;
 
 exports.AspectBase = (key) => {
 

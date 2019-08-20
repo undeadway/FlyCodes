@@ -1,8 +1,8 @@
 ﻿
-let EMPTY_STRING = String.BLANK;
+const EMPTY_STRING = String.BLANK;
 const util = require("./util");
 
-let replaceImg = (function () {
+const replaceImg = (function () {
 
 	const IMG_ALIGN_REGX = /align=(left|center|right|justify)/,
 		IMG_W_H_REGX = /(width|height)=(\d+)/,
@@ -108,7 +108,7 @@ let replaceImg = (function () {
 	};
 })();
 
-let replaceList = function () {
+const replaceList = function () {
 
 	function _replaceList(inner, tag) {
 
@@ -221,9 +221,9 @@ function replaceUrl(str) {
 	return str;
 }
 
-let replaceH5Video = (function () {
+const replaceH5Video = (function () {
 
-	let h5QUeryMap = {
+	const h5QUeryMap = {
 		bilibili: function ({ url, page }) {
 			page = page || 1;
 
@@ -383,7 +383,7 @@ const BLOCK_OUT_STR = "[$1$2][$3$4",
 	TAIL_EXE_STR1_2 = "<$2$3",
 	FONT_REGX_FORMAT_STR = "\\[font=%s\\]";
 
-module.exports = commons = require("./commons").create((str) => {
+const commons = module.exports = require("./commons").create((str) => {
 
 	// 在把 \n 替换为 <br /> 之前把包括 quote 等在内的块层级之间的换行符给去掉
 	str = str.replace(BLOCK_REGX, BLOCK_OUT_STR);

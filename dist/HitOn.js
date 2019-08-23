@@ -1,1 +1,684 @@
-!function(e){var t={};function r(a){if(t[a])return t[a].exports;var n=t[a]={i:a,l:!1,exports:{}};return e[a].call(n.exports,n,n.exports,r),n.l=!0,n.exports}r.m=e,r.c=t,r.d=function(e,t,a){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:a})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var a=Object.create(null);if(r.r(a),Object.defineProperty(a,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)r.d(a,n,function(t){return e[t]}.bind(null,n));return a},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=2)}([function(e,t){function r(e){let t=String.BLANK;for(let r in e){t+=` ${r}="${e[r]}"`}return t}t.compireH5Video=((e,t)=>{let a=`<iframe class="h5video" src="${e}"`;return a+=r(t)+' frameborder="no"></iframe>'}),t.compireH5Audio=((e,t)=>e),t.parseEqualToObject=((e,t)=>{for(let r of e){let e=r.split("=");t[e[0]]=e[1]}}),t.compireObjectToXmlAtruibute=r,t.AspectBase=(e=>{let t=[];return{replace:(r,a,n)=>(r=r.replace(a,`{${e}~${t.length}}`),t.push(n),r),after:r=>(Array.forEach(t,(t,a)=>{r=r.replace(`{${e}~${t}}`,a)}),r)}})},function(e,t,r){const a=r(0),n=/\n/g;function c(e,t){for(;null!==(matched=e.match(t.regexp));){let r=t.tag.html,n=a.compireObjectToXmlAtruibute(t.tag.attrs),c=matched[1],l=t.tag.start+c+t.tag.end;t.replace&&(c=(c=c.replace(t.replace.start.from,t.replace.start.to)).replace(t.replace.end.from,t.replace.end.to));let s=`<${r}${n}>${c}</${r}>`;e=e.replace(l,s)}return e}const l={simpleLineCode:e=>{let t=a.AspectBase("linecode");return t.before=(r=>{for(;e.regexp.test(r);){let a=RegExp.$1,n=e.tag.start+a+e.tag.end,c=`<code class="code">${a}</code>`;r=t.replace(r,n,c)}return r}),t},escapeSequence:e=>{let t=a.AspectBase("backslash");return t.before=(r=>{for(;e.test(r);){let a=RegExp.$1;r=t.replace(r,e,a)}return r}),t}};e.exports={create:(e,t)=>{return{toHTML:(r,a)=>{let{queue:s,aspect:o,object:p}=a,i=[];return o&&Array.forEach(o,(e,t)=>{let a=t.method(t.object);r=a.before(r),i.push(a)}),t.aspect&&Object.forEach(t.aspect,(e,t)=>{let a=l[e](t);a&&(r=a.before(r),i.push(a))}),r=e(r),t.object&&Array.forEach(t.object,(e,t)=>{r=c(r,t)}),p&&Array.forEach(p,(e,t)=>{r=c(r,t)}),Array.forEach(i,(e,t)=>{r=t.after(r)}),t.queue&&Array.forEach(t.queue,(e,t)=>{r=t(r)}),s&&Array.forEach(s,(e,t)=>{r=t(r)}),function(e){try{e=decodeURIComponent(e)}catch(e){}return e}(r=r.replace(n,"<br />"))}}}}},function(e,t,r){const a=r(0),n=/\n(\n(>(.*)\n)+)/,c=/\n>/g,l="引用";var s=function(){const e=/(\*+\. (.)+\n)+/,t=/([0-9]+\. (.)+\n)+/,r=/([a-z]+\. (.)+\n)+/,a=/[0-9]+\. /g,n=/[a-z]+\. /g,c=/\*+\. /g,l=/\n/g,s="<li>",o="</li>";function p(e,t,r,a,n){var c=t.replace(r,s);return c=c.replace(l,o),e.replace(t,a+c+n)}return function(l){for(;null!==(matches=l.match(e));)l=p(l,matches[0],c,"<ul>","</ul>");for(;null!==(matches=l.match(t));)l=p(l,matches[0],a,'<ol class="list_type_1">',"</ol>");for(;null!==(matches=l.match(r));)l=p(l,matches[0],n,'<ol class="list_type_a">',"</ol>");return l}}();const o=/\[#([0-9,A-F]{6})\|((.|\s)*?)\]/i;const p=/\[(#|@|\$|V|A)\]\(((.|\s)*?)\)/;const i={"#":e=>{let t=e.split("|"),r=t[0],a=t[1]||r,n=4===t.length&&t[2]||r,c=t[4===t.length?3:2],l=`<a href="${r}" title="${n}"`;return c&&(l+=` target="_${c}"`),l+=`>${a}</a>`},"@":e=>{let t=e.split("|"),r=t[0];return`<a href="mailto:${r}">${t[1]||r}</a>`},$:e=>{var t=e.split("|"),r=t[0];var a=`<img src="${r}" title="${t[1]||r}"`;return t[2]&&(a+=' width="'+t[2]+'"'),t[3]&&(a+=' height="'+t[3]+'"'),a+=' onload="styles.Image.resize(this)" onclick="styles.Image.protoSize(this)" />'},V:e=>{let t=e.split("|"),r=t.shift(),n={};return a.parseEqualToObject(t,n),a.compireH5Video(r,n)},A:e=>a.compireH5Audio(e)},u=/(\|(.)+\|\n)+/,f=/\|/g,h="</tr><tr>",g="</td><td>",m="<td>",d="</td>",$='<table class="table"><tr>',b="</tr></table>";const y=/\\\//;const A=/\/\*((.|\s)*?)\*\//g,E=/\/((.|\s){1,})\//g,v=/!((.|\s)*?)!/g,x=/-((.|\s)*?)-/g,_=/_((.|\s)*?)_/g,j=/\n>>((.|\s)+?)<<\n/,S=/\n\|\:((.|\s)+?)<<\n/,O=/\n>>((.|\s)+?)\:\|\n/,q=/\?\(([1-9]([0-9]?)):((.|\s)*?)\)/,B=/###### (.*?)(\n|$)/g,R=/##### (.*?)(\n|$)/g,T=/#### (.*?)(\n|$)/g,z=/### (.*?)(\n|$)/g,H=/## (.*?)(\n|$)/g,L=/# (.*?)(\n|$)/g,M='<div class="align_center">$1</div>',P='<div class="align_left">$1</div>',V='<div class="align_right">$1</div>';e.exports=commons=r(1).create(e=>{e=e.replace(A,String.BLANK);let t=function(){let e=a.AspectBase("links");return e.before=(t=>{for(;p.test(t);){let r=RegExp.$1,a=RegExp.$2,n=i[r](a);t=e.replace(t,`[${r}](${a})`,n)}return t}),e}(),r=function(){let e=a.AspectBase("align");return e.before=(t=>{for(;null!==(matches=t.match(j));){let r=matches[0],a=r.replace(j,M);t=e.replace(t,r,a)}for(;null!==(matches=t.match(S));){let r=matches[0],a=r.replace(S,P);t=e.replace(t,r,a)}for(;null!==(matches=t.match(O));){let r=matches[0],a=r.replace(O,V);t=e.replace(t,r,a)}return t}),e}(),k=function(){let e=a.AspectBase("escapes");return e.before=(t=>{for(;null!==(matches=t.match(y));)t=e.replace(t,matches[0],part);return t}),e}();return e=t.before(e),e=k.before(e),e=(e=(e=r.before(e)).replace(E,"<em>$1</em>")).replace(_,"<ins>$1</ins>"),e=r.after(e),e=k.after(e),e=(e=(e=function e(t){for(;n.test(t);){let r=RegExp.$1.replace(c,"\n"),a=(r=r.slice(1)).indexOf("\n"),s=r.slice(0,a),o=String.startsWith(s,"(")&&String.endsWith(s,")"),p=o?s.slice(1,s.length-1):l,i=o?r.slice(a+1):r;i=e(i),t=t.replace(n,`<fieldset><legend>${p}</legend>${i}</fieldset>`)}return t}(e=t.after(e))).replace(v,"<strong>$1</strong>")).replace(x,"<del>$1</del>"),e=(e=(e=(e=(e=(e=(e=function(e){for(;o.test(e);){var t,r=RegExp.$1,a=RegExp.$2,n=a.split("|");t=2===n.length?'<span class="'+n[0]+"_"+r+'">'+n[1]+"</span>":'<span class="color_'+r+'">'+n[0]+"</span>",e=e.replace("[#"+r+"|"+a+"]",t)}return e}(e=(e=function(e){for(;null!==(matches=e.match(u));){let t=matches[0],r=[];Array.forEach(t.split("\n"),function(e,t){1!==e&&(String.isEmpty(t)||(t=t.slice(1,t.length-1),r.push(m+t.replace(f,g)+d)))});let a=$+r.join(h)+b;e=e.replace(t,a)}return e}(e=s(e))).replace(q,'<span class="size_$1">$3</span>'))).replace(B,'<h1 class="h6">$1</h1>')).replace(R,'<h1 class="h5">$1</h1>')).replace(T,'<h1 class="h4">$1</h1>')).replace(z,'<h1 class="h3">$1</h1>')).replace(H,'<h1 class="h2">$1</h1>')).replace(L,'<h1 class="h1">$1</h1>')},{object:[{regexp:/\[\[((.|\s)*?)\]\]/,tag:{start:"[[",end:"]]",html:"pre",attrs:{class:"pre"}}},{regexp:/{{((.|\s)*?)}}/,tag:{start:"{{",end:"}}",html:"ruby"},replace:{start:{from:/\(/g,to:"<rp>(</rp><rt>"},end:{from:/\)/g,to:"</rt><rp>)</rp>"}}}],aspect:{simpleLineCode:{regexp:/`([^`]+?)`/,tag:{start:"`",end:"`"}},escapeSequence:/\\(\S)/}}),commons.clear=(e=>e)}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */,
+/* 1 */
+/***/ (function(module, exports) {
+
+
+exports.compireH5Video = (input, args) => {
+
+	return compireH5Object(input, args, 'iframe', 'h5video');
+};
+
+exports.compireH5Audio = (input, args) => {
+	return input;
+}
+
+function compireH5Object(input, args, tag, className) {
+
+	let result = compireObjectToXmlAtruibute(args);
+
+	return `<${tag} class="${className}" src="${input}" ${result}></${tag}>`;
+}
+
+exports.parseEqualToObject = (input, obj) => {
+	for (let item of input) {
+		let kv = item.split("=");
+		obj[kv[0]] = kv[1];
+	}
+};
+
+function compireObjectToXmlAtruibute(input) {
+
+	let str = String.BLANK;
+
+	for (let k in input) {
+		let v = input[k];
+		str += ` ${k}="${v}"`;
+	}
+
+	return str;
+}
+
+exports.compireObjectToXmlAtruibute = compireObjectToXmlAtruibute;
+
+exports.AspectBase = (key) => {
+
+	let array = [];
+
+	return {
+		replace: (input, part, str) => {
+
+			input = input.replace(part, `{${key}~${array.length}}`);
+			array.push(str);
+
+			return input;
+		},
+		after: (input) => {
+			Array.forEach(array, (i, e) => {
+				input = input.replace(`{${key}~${i}}`, e);
+			});
+
+			return input;
+		}
+	}
+
+};
+
+/***/ }),
+/* 2 */,
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+const util = __webpack_require__(1);
+
+const BR_TAG = "<br />";
+const NL_REGX = /\n/g;
+
+function replaceObjects(str, arg) {
+
+	while ((matched = str.match(arg.regexp)) !== null) {
+
+		let htmlTag = arg.tag.html;
+		let attrs = util.compireObjectToXmlAtruibute(arg.tag.attrs);
+		let inner = matched[1];
+		let input = arg.tag.start + inner + arg.tag.end;
+
+		if (arg.replace) { // 内部还有切换需求的时候进行处理
+			inner = inner.replace(arg.replace.start.from, arg.replace.start.to);
+			inner = inner.replace(arg.replace.end.from, arg.replace.end.to);
+		}
+
+		let output = `<${htmlTag}${attrs}>${inner}</${htmlTag}>`;
+
+		str = str.replace(input, output);
+	}
+
+	return str;
+}
+
+const BUILT_IN_ASPECTS = {
+	simpleLineCode: (arg) => {
+
+		let lineCode = util.AspectBase('linecode');
+		lineCode.before = input => {
+			while (arg.regexp.test(input)) {
+				let obj = RegExp.$1;
+				let part = arg.tag.start + obj + arg.tag.end;
+				let output = `<code class="code">${obj}</code>`;
+				input = lineCode.replace(input, part, output);
+			}
+			return input;
+		};
+
+		return lineCode;
+	},
+	escapeSequence: (arg) => {
+
+		let backSlash = util.AspectBase('backslash');
+		backSlash.before = input => {
+			while (arg.test(input)) {
+				let output = RegExp.$1;
+				input = backSlash.replace(input, arg, output);
+			}
+			return input;
+		};
+
+		return backSlash;
+	}
+};
+
+module.exports = {
+	create: (parse, arg) => {
+
+		function replaceURI(str) {
+
+			try {
+				str = decodeURIComponent(str);// 最后的转义出处理
+			} catch (e) {
+				// 如果出错，就当不存在
+			}
+			return str;
+		}
+
+		return {
+			toHTML: (str, plugIns) => {
+				let { queue, aspect, object } = plugIns;
+
+				let aspects = [];
+
+				if (aspect) { // 定制插片前处理
+					Array.forEach(aspect, (i, a) => {
+						let aspect = a.method(a.object);
+						str = aspect.before(str);
+						aspects.push(aspect);
+					});
+				}
+				if (arg.aspect) { // 内置插片前处理
+					Object.forEach(arg.aspect, (n, o) => {
+						let aspect = BUILT_IN_ASPECTS[n](o);
+						if (aspect) {
+							str = aspect.before(str);
+							aspects.push(aspect);
+						}
+					});
+				}
+
+				str = parse(str);
+
+				if (arg.object) { // 内置对象处理
+					Array.forEach(arg.object, (i, o) => {
+						str = replaceObjects(str, o);
+					});
+				}
+				if (object) { // 定制对象处理
+					Array.forEach(object, (i, o) => {
+						str = replaceObjects(str, o);
+					});
+				}
+
+				// 插片后处理
+				Array.forEach(aspects, (i, a) => {
+					str = a.after(str);
+				});
+
+				if (arg.queue) { // 内置队列处理
+					Array.forEach(arg.queue, (i, obj) => {
+						str = obj(str);
+					});
+				}
+				if (queue) { // 定制队列处理
+					Array.forEach(queue, (i, obj) => {
+						str = obj(str);
+					});
+				}
+
+				str = str.replace(NL_REGX, BR_TAG); // 单行换行
+
+				return replaceURI(str);
+			}
+		}
+	}
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+const util = __webpack_require__(1);
+
+const MAIN_QUOT_REGX = /\n(\n(>(.*)\n)+)/,
+	NL_RT_ANGLE_GLOBAL_REGX = /\n>/g;
+const STRING_QUOTE = "引用";
+
+function replaceQuote(input) {
+
+	while (MAIN_QUOT_REGX.test(input)) { // 获取>列表行，从 \n> 开始 到 >\n 结束，中间每行都以 > 开头 \n 结束
+		let protoQuotTxt = RegExp.$1;
+		let quotTxt = protoQuotTxt.replace(NL_RT_ANGLE_GLOBAL_REGX, "\n"); // 去掉每行开头的 >(&gt;)
+		quotTxt = quotTxt.slice(1); // 去掉第一行的换行符
+		let indexNL = quotTxt.indexOf("\n");
+
+		let quotTtlLn = quotTxt.slice(0, indexNL);
+		let hasQuotTtl = String.startsWith(quotTtlLn, "(") && String.endsWith(quotTtlLn, ")");
+
+		let legend = hasQuotTtl ? quotTtlLn.slice(1, quotTtlLn.length - 1) : STRING_QUOTE;
+		let outTxt = hasQuotTtl ? quotTxt.slice(indexNL + 1) : quotTxt;
+
+		outTxt = replaceQuote(outTxt); // 递归查找看是否有多重引用
+
+		input = input.replace(MAIN_QUOT_REGX, `<fieldset><legend>${legend}</legend>${outTxt}</fieldset>`);
+	}
+
+	return input;
+}
+
+const replaceList = (function () {
+
+	const UL_REGEX = /(\*+\. (.)+\n)+/,
+		OL_1_REGEX = /([0-9]+\. (.)+\n)+/,
+		OL_A_REGEX = /([a-z]+\. (.)+\n)+/,
+		TYPE_1_LI_START = /[0-9]+\. /g,
+		TYPE_A_LI_START = /[a-z]+\. /g,
+		UL_LI_START = /\*+\. /g,
+		LI_END = /\n/g;
+
+	const LI_START_TAG = "<li>",
+		LI_END_TAG = "</li>",
+		UL_START_TAG = "<ul>",
+		UL_END_TAG = "</ul>",
+		OL_START_TYPE_1_TAG = '<ol class="list_type_1">',
+		OL_START_TYPE_A_TAG = '<ol class="list_type_a">',
+		OL_END_TAG = "</ol>";
+
+	function replace(input, part, liStart, startTag, endTag) {
+
+		var output = part.replace(liStart, LI_START_TAG);
+		output = output.replace(LI_END, LI_END_TAG);
+
+		return input.replace(part, startTag + output + endTag);
+	}
+
+	return function (input) {
+
+		// ul
+		while ((matches = input.match(UL_REGEX)) !== null) {
+			input = replace(input, matches[0], UL_LI_START, UL_START_TAG, UL_END_TAG);
+		}
+		// ol -1
+		while ((matches = input.match(OL_1_REGEX)) !== null) {
+			input = replace(input, matches[0], TYPE_1_LI_START, OL_START_TYPE_1_TAG, OL_END_TAG);
+		}
+		// ol -a
+		while ((matches = input.match(OL_A_REGEX)) !== null) {
+			input = replace(input, matches[0], TYPE_A_LI_START, OL_START_TYPE_A_TAG, OL_END_TAG);
+		}
+
+		return input;
+	};
+})();
+
+const COLOR_TAG_REGX = /\[#([0-9,A-F]{6})\|((.|\s)*?)\]/i;
+function replaceColor(input) {
+	while (COLOR_TAG_REGX.test(input)) {
+		var color = RegExp.$1,
+			inner = RegExp.$2,
+			outs;
+		var splits = inner.split("|");
+		if (splits.length === 2) {
+			outs = '<span class="' + splits[0] + "_" + color + '">' + splits[1] + '</span>';
+		} else {
+			outs = '<span class="color_' + color + '">' + splits[0] + '</span>';
+		}
+		input = input.replace("[#" + color + "|" + inner + "]", outs);
+	}
+	return input;
+}
+
+const LINK_REGX = /\[(#|@|\$|V|A)\]\(((.|\s)*?)\)/;
+function replaceSrcLinks() {
+
+	let links = util.AspectBase('links');
+	links.before = input => {
+		while (LINK_REGX.test(input)) {
+			let tag = RegExp.$1;
+			let value = RegExp.$2;
+
+			let output = ReplaceHolder[tag](value);
+
+			input = links.replace(input, `[${tag}](${value})`, output);
+		}
+		return input;
+	};
+
+	return links;
+}
+
+const ReplaceHolder = {
+	'#': input => { // 链接  [#](url|txt|title|target)
+
+		let splits = input.split("|");
+		let url = splits[0];
+		let txt = splits[1] || url;
+		let title = (splits.length === 4 ? (splits[2] || url) : url);
+		let target = splits[splits.length === 4 ? 3 : 2];
+
+		let outs = `<a href="${url}" title="${title}"`;
+		if (target) {
+			outs += ` target="_${target}"`;
+		}
+		outs += `>${txt}</a>`;
+
+		return outs;
+	},
+	"@": input => { // 邮件  [@](url|title)
+		let splits = input.split("|");
+		let url = splits[0];
+		let title = splits[1] || url;
+
+		return `<a href="mailto:${url}">${title}</a>`;
+	},
+	"$": input => { // 图像  [$](url|title|width|height)
+
+		let splits = input.split("|");
+
+		let str = splits[0];
+		let title = splits[1] || str;
+
+		let outs = `<img src="${str}" title="${title}"`;
+
+		if (splits[2]) {
+			outs += ' width="' + splits[2] + '"';
+		}
+		if (splits[3]) {
+			outs += ' height="' + splits[3] + '"';
+		}
+		outs += ' onload="styles.Image.resize(this)" onclick="styles.Image.protoSize(this)" />';
+
+		return outs;
+	},
+	"V": input => { // 视频  [V](url)
+
+		let inputArr = input.split("|");
+		let url = inputArr.shift();
+		let args = {};
+
+		util.parseEqualToObject(inputArr, args);
+
+		return util.compireH5Video(url, args);
+	},
+	"A": input => { // 音频  [A](url)
+		return util.compireH5Audio(input);
+	}
+};
+
+const TABLE_REGEX = /(\|(.)+\|\n)+/,
+	VERTICAL_BAR = /\|/g;
+const TR_JOIN = "</tr><tr>",
+	TD_JOIN = "</td><td>",
+	TD_START = "<td>",
+	TD_END = "</td>",
+	TABLE_START = '<table class="table"><tr>',
+	TABLE_END = '</tr></table>';
+function replaceTable(input) {
+
+	while ((matches = input.match(TABLE_REGEX)) !== null) {
+		let part = matches[0]
+		let output = [];
+
+		Array.forEach(part.split("\n"), function (i, line) {
+			if (i === 1) return;
+			if (String.isEmpty(line)) return;
+			line = line.slice(1, line.length - 1); // 去掉最开始和最后的 |
+			output.push(TD_START + line.replace(VERTICAL_BAR, TD_JOIN) + TD_END);
+		});
+
+		let table = TABLE_START + output.join(TR_JOIN) + TABLE_END;
+
+		input = input.replace(part, table);
+	}
+
+	return input;
+}
+
+const REFERENCE_REGX = /\[\^((\S)+)?\]/;
+function replaceReference(input) {
+
+	let tags = new Set(), index = 1;
+
+	while((matches = input.match(REFERENCE_REGX)) !== null) {
+
+		let part = matches[0];
+		let tag = matches[1];
+
+		if (!tags.has(part)) { // 没有出现过
+			tags.add(part);
+			let html = `<sup id="f_${tag}"><a href="#l_${tag}">${tags.size}</a></sup> `;
+			input = input.replace(REFERENCE_REGX, html);
+		} else { // 已经记载
+			let html = `<a id="l_${tag}" href="#f_${tag}">^</a> ${index}: `;
+			input = input.replace(REFERENCE_REGX, html);
+			index++;
+		}
+	}
+
+	return input;
+}
+
+const ESCAPER_REGX = /\\\//;
+function replaceEscapers() {
+
+	let escapes = util.AspectBase('escapes');
+	escapes.before = input => {
+		while ((matches = input.match(ESCAPER_REGX)) !== null) {
+			input = escapes.replace(input, matches[0], part);
+		}
+
+		return input;
+	}
+	return escapes;
+}
+
+function replaceAlign() {
+
+	let align = util.AspectBase('align');
+
+	align.before = input => {
+		while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
+
+			let part = matches[0];
+			let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
+			input = align.replace(input, part, str);
+		}
+
+		while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
+
+			let part = matches[0];
+			let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
+			input = align.replace(input, part, str);
+		}
+
+		while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
+
+			let part = matches[0];
+			let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
+			input = align.replace(input, part, str);
+		}
+
+		return input;
+	};
+
+	return align;
+}
+
+const COMMENT_REGX = /\/\*((.|\s)*?)\*\//g,
+	ITALIC_REGX = /\/((.|\s){1,})\//g,
+	BOLD_REGX = /!((.|\s)*?)!/g,
+	DEL_LINE_REGX = /-((.|\s)*?)-/g,
+	INS_LINE_REGX = /_((.|\s)*?)_/g,
+	CENTER_ALIGN_REGX = /\n\|>((.|\s)+?)<\|\n/,
+	LEFT_ALIGN_REGX = /\n\|\:((.|\s)+?)<\|\n/,
+	RIGHT_ALIGN_REGX = /\n\|>((.|\s)+?)\:\|\n/,
+	FONT_SIZE_REGX = /\?\(([1-9]([0-9]?)):((.|\s)*?)\)/,
+	H6_REGX = /###### (.*?)(\n|$)/g,
+	H5_REGX = /##### (.*?)(\n|$)/g,
+	H4_REGX = /#### (.*?)(\n|$)/g,
+	H3_REGX = /### (.*?)(\n|$)/g,
+	H2_REGX = /## (.*?)(\n|$)/g,
+	H1_REGX = /# (.*?)(\n|$)/g;
+
+const ITALIC_STR = "<em>$1</em>",
+	BOLD_STR = "<strong>$1</strong>",
+	DEL_LINE_STR = "<del>$1</del>",
+	INS_LINE_STR = "<ins>$1</ins>",
+	CENTER_ALIGN_STR = '<div class="align_center">$1</div>',
+	LEFT_ALIGN_STR = '<div class="align_left">$1</div>',
+	RIGHT_ALIGN_STR = '<div class="align_right">$1</div>',
+	FONT_SIZE_STR = '<span class="size_$1">$3</span>',
+	H6_STR = "<h1 class=\"h6\">$1</h1>",
+	H5_STR = "<h1 class=\"h5\">$1</h1>",
+	H4_STR = "<h1 class=\"h4\">$1</h1>",
+	H3_STR = "<h1 class=\"h3\">$1</h1>",
+	H2_STR = "<h1 class=\"h2\">$1</h1>",
+	H1_STR = "<h1 class=\"h1\">$1</h1>";
+
+const commons = module.exports = __webpack_require__(3).create((input) => {
+
+	input = input.replace(COMMENT_REGX, String.BLANK); // 去掉注释
+
+	let link = replaceSrcLinks(); // 外部连接
+	let align = replaceAlign(); // 对齐
+	let escape = replaceEscapers(); // 转义字符
+
+	input = link.before(input);
+	input = escape.before(input);
+	input = align.before(input);
+
+	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
+	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
+
+	input = align.after(input);
+	input = escape.after(input);
+	input = link.after(input);
+
+	input = replaceQuote(input); // 引用
+	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
+	input = input.replace(DEL_LINE_REGX, DEL_LINE_STR); // 删除线
+	input = replaceList(input); // 列表
+	input = replaceTable(input); // 表格
+
+	input = input.replace(FONT_SIZE_REGX, FONT_SIZE_STR); // 字号
+
+	input = replaceColor(input); // 颜色
+
+	input = replaceReference(input); // 参考链接
+
+	input = input.replace(H6_REGX, H6_STR); // 六级标题
+	input = input.replace(H5_REGX, H5_STR); // 五级标题
+	input = input.replace(H4_REGX, H4_STR); // 四级标题
+	input = input.replace(H3_REGX, H3_STR); // 三级标题
+	input = input.replace(H2_REGX, H2_STR); // 二级标题
+	input = input.replace(H1_REGX, H1_STR); // 一级标题
+
+	// 整个文本中，到处都有需要换行处理的地方，而且换行直接<br /> 更符合我自己的习惯，所以段落处理不再实现
+	//input = replaceP(input); // 段落
+
+	return input;
+}, {
+		object: [
+			{
+				regexp: /\[\[((.|\s)*?)\]\]/,
+				tag: {
+					start: "[[",
+					end: "]]",
+					html: "pre",
+					attrs: {
+						'class': 'pre'
+					}
+				}
+			},
+			{
+				regexp: /{{((.|\s)*?)}}/,
+				tag: {
+					start: '{{',
+					end: '}}',
+					html: 'ruby'
+				},
+				replace: {
+					start: {
+						from: /\(/g,
+						to: "<rp>(</rp><rt>"
+					},
+					end: {
+						from: /\)/g,
+						to: "</rt><rp>)</rp>"
+					}
+				}
+			}
+		],
+		aspect: {
+			simpleLineCode: {
+				regexp: /`([^`]+?)`/,
+				tag: {
+					start: "`",
+					end: "`"
+				}
+			},
+			escapeSequence: /\\(\S)/
+		}
+	});
+
+commons.clear = (str) => {
+	return str;
+};
+
+/***/ })
+/******/ ]);

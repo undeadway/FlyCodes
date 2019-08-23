@@ -133,18 +133,17 @@ const ReplaceHolder = {
 		return `<a href="mailto:${url}">${title}</a>`;
 	},
 	"$": input => { // 图像  [$](url|title|width|height)
-		var splits = input.split("|");
 
-		var str = splits[0];
-		
+		let splits = input.split("|");
+
+		let str = splits[0];
 		let title = splits[1] || str;
 
-		var outs = `<img src="${str}" title="${title}"`;
+		let outs = `<img src="${str}" title="${title}"`;
 
 		if (splits[2]) {
 			outs += ' width="' + splits[2] + '"';
 		}
-
 		if (splits[3]) {
 			outs += ' height="' + splits[3] + '"';
 		}
@@ -191,6 +190,30 @@ function replaceTable(input) {
 		let table = TABLE_START + output.join(TR_JOIN) + TABLE_END;
 
 		input = input.replace(part, table);
+	}
+
+	return input;
+}
+
+const REFERENCE_REGX = /\[\^((\S)+)?\]/;
+function replaceReference(input) {
+
+	let tags = new Set(), index = 1;
+
+	while((matches = input.match(REFERENCE_REGX)) !== null) {
+
+		let part = matches[0];
+		let tag = matches[1];
+
+		if (!tags.has(part)) { // 没有出现过
+			tags.add(part);
+			let html = `<sup id="f_${tag}"><a href="#l_${tag}">${tags.size}</a></sup> `;
+			input = input.replace(REFERENCE_REGX, html);
+		} else { // 已经记载
+			let html = `<a id="l_${tag}" href="#f_${tag}">^</a> ${index}: `;
+			input = input.replace(REFERENCE_REGX, html);
+			index++;
+		}
 	}
 
 	return input;
@@ -302,6 +325,8 @@ const commons = module.exports = require("./../commons").create((input) => {
 
 	input = replaceColor(input); // 颜色
 
+	input = replaceReference(input); // 参考链接
+
 	input = input.replace(H6_REGX, H6_STR); // 六级标题
 	input = input.replace(H5_REGX, H5_STR); // 五级标题
 	input = input.replace(H4_REGX, H4_STR); // 四级标题
@@ -321,8 +346,8 @@ const commons = module.exports = require("./../commons").create((input) => {
 					start: "[[",
 					end: "]]",
 					html: "pre",
-					attrs : {
-						'class' : 'pre'
+					attrs: {
+						'class': 'pre'
 					}
 				}
 			},

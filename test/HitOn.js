@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -679,16 +679,6 @@ const commons = module.exports = __webpack_require__(3).create((input) => {
 commons.clear = (str) => {
 	return str;
 };
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-Coralian.setToGlobal("HitOn", __webpack_require__(4));
 
 /***/ })
 /******/ ]);

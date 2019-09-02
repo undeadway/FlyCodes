@@ -54,7 +54,7 @@ const basePlugIn = {
 				}
 			}
 		],
-	//	queue: queues
+		//	queue: queues
 	},
 	HitOn: {
 		aspect: [
@@ -63,7 +63,7 @@ const basePlugIn = {
 				object: CODES_OBJ
 			}
 		],
-	//	queue: queues
+		//	queue: queues
 	}
 };
 
@@ -97,6 +97,30 @@ function parseCodes(arg) {
 	return codes;
 }
 
+function addPlugIn(adds, lang) {
+	let p = basePlugIn[lang];
+
+	p.aspect = p.aspect || [];
+	p.queue = p.queue || [];
+	p.object = p.object || [];
+
+	if (adds.aspect) {
+		adds.aspect.map(item => {
+			p.aspect.push(item);
+		});
+	}
+	if (adds.queue) {
+		adds.queue.map(item => {
+			p.queue.push(item);
+		});
+	}
+	if (adds.object) {
+		adds.object.map(item => {
+			p.object.push(item);
+		});
+	}
+}
+
 Coralian.setToGlobal("FlyCodes", {
 	lang: {
 		HITON: HITON_STR,
@@ -105,13 +129,16 @@ Coralian.setToGlobal("FlyCodes", {
 	setHighLighter: input => {
 		highLighter = input;
 	},
-	addPlugIn: (lang, adds) => {
+	addPlugIn: (adds, lang) => {
 
-		let p = basePlugIn[lang];
-
-		Object.addAll(adds.aspect, p.aspect);
-		Object.addAll(adds.queue, p.queue);
-		Object.addAll(adds.object, p.object);
+		if (lang) {
+			addPlugIn(adds, lang);
+		} else {
+			let langs = Object.keys(basePlugIn);
+			for (let _lang of langs) {
+				addPlugIn(adds, _lang);
+			}
+		}
 
 	},
 	toHTML: (src, name) => {

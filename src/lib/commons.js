@@ -3,6 +3,7 @@ const util = require("./util");
 
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
+const PRE_TAG = Coralian.constants.HtmlTag.PRE;
 
 function replaceObjects(str, arg) {
 
@@ -12,6 +13,10 @@ function replaceObjects(str, arg) {
 		let attrs = util.compireObjectToXmlAtruibute(arg.tag.attrs);
 		let inner = matched[1];
 		let input = arg.tag.start + inner + arg.tag.end;
+		if (htmlTag === PRE_TAG) {
+			inner = inner.replace("<", "&lt;"); // 所有预定义标签中的HTML标签都无效化处理
+			inner = inner.replace(">", "&gt;");
+		}
 
 		if (arg.replace) { // 内部还有切换需求的时候进行处理
 			inner = inner.replace(arg.replace.start.from, arg.replace.start.to);

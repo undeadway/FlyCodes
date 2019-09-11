@@ -1,1 +1,0 @@
-Coralian.setToGlobal("HitOn", require("../lib/HitOn"));

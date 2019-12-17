@@ -311,10 +311,6 @@ const commons = module.exports = require("./../commons").create((input) => {
 	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
 	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
 
-	input = align.after(input);
-	input = escape.after(input);
-	input = link.after(input);
-
 	input = replaceQuote(input); // 引用
 	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
 	input = input.replace(DEL_LINE_REGX, DEL_LINE_STR); // 删除线
@@ -333,6 +329,10 @@ const commons = module.exports = require("./../commons").create((input) => {
 	input = input.replace(H3_REGX, H3_STR); // 三级标题
 	input = input.replace(H2_REGX, H2_STR); // 二级标题
 	input = input.replace(H1_REGX, H1_STR); // 一级标题
+
+	input = align.after(input);
+	input = escape.after(input);
+	input = link.after(input);
 
 	// 整个文本中，到处都有需要换行处理的地方，而且换行直接<br /> 更符合我自己的习惯，所以段落处理不再实现
 	//input = replaceP(input); // 段落

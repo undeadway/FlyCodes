@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/undeadway/FlyCodes.git"
+    "url": "git+https://gitee.com/undeadway/FlyCodes.git"
   },
   "keywords": [
     "expands",
@@ -17,7 +17,7 @@
   "author": "hzwaygc@gmail.com",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/undeadway/FlyCodes/issues"
+    "url": "https://gitee.com/undeadway/FlyCodes/issues"
   },
   "homepage": "http://wpl.waygc.net/prj=FlyCodes",
   "dependencies": {

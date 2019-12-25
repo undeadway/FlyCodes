@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://gitee.com/undeadway/FlyCodes/issues"
   },
-  "homepage": "http://wpl.waygc.net/prj=FlyCodes",
+  "homepage": "http://codes.waygc.net/fly/FlyCodes.helper.html",
   "dependencies": {
     "coralian": "0.0.14"
   },

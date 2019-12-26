@@ -12,7 +12,8 @@ const parsers = {
 	HitOn: require("./lib/HitOn/")
 };
 
-const proxy = new Proxy(parsers, {
+// 这个代理的好处是，不用为每个不同的项目写一个对象，只要写 if/else 就可以了
+const langProxy = new Proxy(parsers, {
 	get: (target, key) => {
 		if (String.startsWith(key, HITON_STR) && key !== HITON_STR) {
 			return require("./lib/HitOn/dist/" + key.split("_")[1]); // 这里是为了保证 HitOn可以向前兼容
@@ -22,6 +23,7 @@ const proxy = new Proxy(parsers, {
 	}
 });
 
+// 代码解析用
 const CODES_OBJ = {
 	regexp: /```(.*[\r\n]+)((.|\s)*?)```/,
 	code: "$2",
@@ -126,7 +128,7 @@ Coralian.setToGlobal("FlyCodes", {
 		HITON: HITON_STR,
 		UBB: UBB_STR
 	},
-	setHighLighter: input => {
+	setHighLighter: (input) => {
 		highLighter = input;
 	},
 	addPlugIn: (adds, lang) => {
@@ -152,7 +154,7 @@ Coralian.setToGlobal("FlyCodes", {
 		try {
 			src = src.replace(/\r\n/g, "\n"); // 把 \r 给全部去掉，免得出现各种奇怪的东西
 			src = src.replace(/\r/g, "\n");
-			let parse = proxy[name];
+			let parse = langProxy[name];
 			return parse.toHTML(src, getPlugIn(name));
 		} catch (e) {
 			Coralian.logger.err(e);

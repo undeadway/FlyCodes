@@ -113,7 +113,7 @@ const ReplaceHolder = {
 
 		let splits = input.split("|");
 		let url = splits[0];
-		let txt = commonReplace(splits[1]) || url;
+		let txt = splits[1] ? commonReplace(splits[1]) : url;
 		let title = (splits.length === 4 ? (splits[2] || url) : url);
 		let target = splits[splits.length === 4 ? 3 : 2];
 

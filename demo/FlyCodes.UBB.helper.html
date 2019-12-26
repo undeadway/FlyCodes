@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>FlyEtitor 使用说明</title>
+<link rel="stylesheet" type="text/css" href="./FlyShow.css" />
+</head>
+<body>
+<table border="1">
+	<tr>
+		<td>一级分类</td>
+		<td>二级分类</td>
+		<td>语法</td>
+		<td>说明</td>
+		<td>示例</td>
+		<td>效果</td>
+	</tr>
+	<tr>
+		<td rowspan="3">格式</td>
+		<td>段落</td>
+		<td>[p][/p]</td>
+		<td>为文档插入一个独立的段落</td>
+		<td>[p]第一个段落[/p][p]第二个段落[/p]</td>
+		<td><p>第一个段落</p><p>第二个段落</p></td>
+	</tr>
+	<tr>
+		<td>标题1-6</td>
+		<td>[h1][/h1]<br />
+		[h2][/h2]<br />
+		[h3][/h3]<br />
+		[h4][/h4]<br />
+		[h5][/h5]<br />
+		[h6][/h6]</td>
+		<td>为文档插入一个标题</td>
+		<td>[h1]标题1[/h1]<br />
+		[h2]标题2[/h2]<br />
+		[h3]标题3[/h3]<br />
+		[h4]标题4[/h4]<br />
+		[h5]标题5[/h5]<br />
+		[h6]标题6[/h6]</td>
+		<td><h1>标题1</h1>
+		<h2>标题2</h2>
+		<h3>标题3</h3>
+		<h4>标题4</h4>
+		<h5>标题5</h5>
+		<h6>标题6</h6></td>
+	</tr>
+	<tr>
+		<td>预定义</td>
+		<td>[pre][/pre]</td>
+		<td>为文档插入一个预定义格式的段落，该段落的文档格式（不包括颜色、下划线等）的设置在插入前后保持原样</td>
+		<td>[pre]为文档插入一个预定义格式的段落
+		<br />该段落的文档格式（不包括颜色、下划线等）的设置在插入前后保持原样[/pre]</td>
+		<td><pre>文档插入一个预定义格式的段落
+该段落的文档格式（不包括颜色、下划线等）的设置在插入前后保持原样</pre></td>
+	</tr>
+	<tr>
+		<td colspan="2">字体</td>
+		<td>[font=name][/font]</td>
+		<td>为某一段文字制定特定的字体</td>
+		<td>[font=楷体]楷体字[/font]</td>
+		<td><span class="font_kai">楷体字</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">字号</td>
+		<td>[size=value][/size]</td>
+		<td>为某一段文字制定特定的字号</td>
+		<td>[size=24]24号字[/size]</td>
+		<td><span class="size_24">24号字</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">粗体</td>
+		<td>[b][/b]
+<br />[bold][/bold]</td>
+		<td>加粗某一段文字</td>
+		<td>[b]加粗某一段文字[/b]
+<br />[bold]加粗某一段文字[/bold]</td>
+		<td><b>加粗某一段文字</b></td>
+	</tr>
+	<tr>
+		<td colspan="2">下划线</td>
+		<td>[u][/u]
+<br />[underline][/underline]</td>
+		<td>给一段文字添加下划线</td>
+		<td>[u]给一段文字添加下划线[/u]
+<br />[underline]给一段文字添加下划线[/underline]</td>
+		<td><u>加粗一段文字</u></td>
+	</tr>
+	<tr>
+		<td colspan="2">斜体字</td>
+		<td>[i][/i]
+<br />[italic][/italic]</td>
+		<td>倾斜一段文字</td>
+		<td>[i]倾斜一段文字[/i]
+<br />[italic]倾斜一段文字[/italic]</td>
+		<td><i>倾斜一段文字</i></td>
+	</tr>
+	<tr>
+		<td colspan="2">字体颜色</td>
+		<td>[color=value][/color]</td>
+		<td>给一段文字添加颜色</td>
+		<td>[color=#FF0000]红色字[/color]</td>
+		<td><span class="color_FF0000">红色字</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">背景色</td>
+		<td>[bgclor=value][/value]</td>
+		<td>给一段文字添加背景色</td>
+		<td>[bgclor=#FF0000]红色背景[/color]</td>
+		<td><span class="bgcolor_FF0000">红色背景</span></td>
+	</tr>
+	<tr>
+		<td colspan="2">删除线</td>
+		<td>[strike][/strike]</td>
+		<td>给一段文字添加删除线</td>
+		<td>[strike]删除线[/strike]</td>
+		<td><strike>删除线</strike></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="4">链接</td>
+		<td>[url]link[/url]</td>
+		<td>添加一个超链接</td>
+		<td>[url]./FlyEditor.helper.html[/url]</td>
+		<td><a href="./FlyEditor.helper.html">./FlyEditor.helper.html</a></td>
+	</tr>
+	<tr>
+		<td>[url target=value][/url]</td>
+		<td>添加一个在指定窗口打开的超链接</td>
+		<td>[url target=blank]./FlyEditor.helper.html[/url]</td>
+		<td><a href="./FlyEditor.helper.html" target=_blank>./FlyEditor.helper.html</a></td>
+	</tr>
+	<tr>
+		<td>[url=link]title[/url]</td>
+		<td>添加一个有文字说明的超链接</td>
+		<td>[url=./FlyEditor.helper.html]FlyEtitor 使用说明[/url]</td>
+		<td><a href="./FlyEditor.helper.html">FlyEtitor 使用说明</a></td>
+	</tr>
+	<tr>
+		<td>[url=link target=value]title[/url]</td>
+		<td>添加一个有文字说明在指定窗口打开的超链接</td>
+		<td>[url=./FlyEditor.helper.html target=blank]FlyEtitor 使用说明[/url]</td>
+		<td><a href="./FlyEditor.helper.html" target="_blank">FlyEtitor 使用说明</a></td>
+	</tr>
+	<tr>
+		<td colspan="2">对其方式</td>
+		<td>[align=type][/align]</td>
+		<td>文本在某个区域内的对齐方式</td>
+		<td>[align=center]文本在此单元格内<br />居中对齐[/align]</td>
+		<td><div align="center">文本在此单元格内<br />居中对齐</div></td>
+	</tr>
+	<tr>
+		<td rowspan="2">列表</td>
+		<td>有序列表</td>
+		<td>[list=type][/list]</td>
+		<td>可以对列表通过字母、数字等形式进行序号排列</td>
+		<td>[list=1]有序列表<br />无序列表[/list]</td>
+		<td><ol type="1">
+			<li>有序列表</li>
+			<li>无序列表</li>
+		</ol></td>
+	</tr>
+	<tr>
+		<td>无序列表</td>
+		<td>[list][/list]</td>
+		<td>序列没有数字或字母进行序列提示</td>
+		<td>[list]有序列表<br />无序列表[/list]</td>
+		<td><ul>
+			<li>有序列表</li>
+			<li>无序列表</li>
+		</ul></td>
+	</tr>
+	<tr>
+		<td colspan="2">上标</td>
+		<td>[sup][/sup]</td>
+		<td>将文字转换为上标</td>
+		<td>文字[sup]上标[/sup]</td>
+		<td>文字<sup>上标</sup></td>
+	</tr>
+	<tr>
+		<td colspan="2">下标</td>
+		<td>[sub][/sub]</td>
+		<td>将文字转换为下标</td>
+		<td>文字[sub]下标[/sub]</td>
+		<td>文字<sub>下标</sub></td>
+	</tr>
+	<tr>
+		<td colspan="2">表格</td>
+		<td>[table][tr][td][/td][/tr][/table]</td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="4">图片</td>
+		<td>[img][/img]</td>
+		<td>显示图片</td>
+		<td>[img]http://waygc.net/res/imgs/LOGO.png[/img]显示图片</td>
+		<td><img src="http://waygc.net/res/imgs/LOGO.png"title="http://waygc.net/res/imgs/LOGO.png" />显示图片</td>
+	</tr>
+	<tr>
+		<td>[img align=value]src[/img]</td>
+		<td>带有对齐方式的图片显示</td>
+		<td>[img align=left]http://waygc.net/res/imgs/LOGO.png[/img]带有对齐方式的图片显示</td>
+		<td><img src="http://waygc.net/res/imgs/LOGO.png" title="http://waygc.net/res/imgs/LOGO.png" align="left" />带有对齐方式的图片显示</td>
+	</tr>
+	<tr>
+		<td>[img=src]title[/img]</td>
+		<td>带有文字说明的图片</td>
+		<td>[img=http://waygc.net/res/imgs/LOGO.png]LOGO[/img]带有文字说明的图片</td>
+		<td><img src="http://waygc.net/res/imgs/LOGO.png" title="LOGO" />带有文字说明的图片</td>
+	</tr>
+	<tr>
+		<td>[img=src align=type]title[/img]</td>
+		<td>带有和文字说明对齐方式的图片显示</td>
+		<td>[img src="http://waygc.net/res/imgs/LOGO.png" align=left]LOGO[/img]带有和文字说明对齐方式的图片显示</td>
+		<td><img src="http://waygc.net/res/imgs/LOGO.png" title="LOGO" align="left" />带有和文字说明对齐方式的图片显示</td>
+	</tr>
+	<tr>
+		<td colspan="2">表情</td>
+		<td>[name]</td>
+		<td></td>
+		<td>[一脸血]</td>
+		<td><img src="./face/114.gif" title="一脸血" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="2">引用</td>
+		<td>[quote][/quote]</td>
+		<td>文字引用</td>
+		<td>[quote]文字引用[/quote]</td>
+		<td><fieldset class="fieldset"><legend class="legend">引用</legend>文字引用</fieldset></td>
+	</tr>
+	<tr>
+		<td>[quote=name][/quote]</td>
+		<td>自带标题的文字引用</td>
+		<td>[quote=标题]文字引用[/quote]</td>
+		<td><fieldset class="fieldset"><legend class="legend">标题</legend>文字引用</fieldset></td>
+	</tr>
+	<tr>
+		<td colspan="2">FLASH</td>
+		<td>[flash]src[/flash]</td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+</body>
+</html>

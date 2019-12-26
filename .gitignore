@@ -1,5 +1,4 @@
 node_modules
-test/file
+test/test.hiton
 test/output.html
-res
-.vscode
+package-lock.json

@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+.code pre{font-family:Consolas; font-size:11pt; padding:5px 5px 5px 25px; margin: 0px; max-height:500px; max-width:750px; overflow: auto;
+		background:#49494b;/*#f6feff*/}
+.code ol{display:block; margin:0px; list-style:decimal; margin: 0px;}
+.code li{vertical-align:middle; border-left:3px solid #146b00; padding-left:5px; height: 22px; line-height: 22px; color:#f6fffd;}
+.code li:nth-child(2n-1){background:#41535b;}
+
+
+/* 红色系：正则表达式、CSS# */
+ .code .regexp, .code .css_id{color:#f55385;}
+
+ /* 橙色系：字符串、字符 */
+ .code .string, .code .data_val{color:#ff9600;}
+ .code .css_pesudo_class, .code .character{color:#f0ff00;}
+
+/* 黄色系：注释、文档 */
+ .code .comment{color:#dcdcaa; font-style:oblique;}
+ .code .doc, .code .xml_cdata{color:#c9c986;}
+
+/* 绿色系：数字、CSS类、预定义、Annotation、描述信息 */
+ .code .number{color:#00F00F;}
+ .code .css_class, .code .define{color:#afff03;}
+ .code .description, .code .data_key{color:#25f8a0;}
+
+/* 蓝色系：关键字、内置函数、变量  */
+.code .keyword, .code .xmltag{color:#9cdcfe;}
+.code .builtin_func, .code .xml_doctype{color:#60fdf4;}
+.code .builtin_var, .code .filetype{color:#a892f9;}
+
+
+/* 紫色系：括号、TODO、CSS@ */
+.code .bracket{color:#f885fa; margin:0px 2px;}
+.code .css_at, .code .todo{color:#bbb0ff;}
+
+.code .css_name, .code .keyword{font-style:italic;}
+.code .keyword{margin-right:1px;}
+.code .css_id, .code .css_class,
+.code .bracket, .code .todo, .code .xml_doctype, .code .filetype{font-weight:bold;}
+
+.code_list{list-style-type:decimal;}
+

@@ -23,5 +23,7 @@
   "dependencies": {
     "coralian": "0.0.14"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "flyhighlighter": "0.0.3"
+  }
 }

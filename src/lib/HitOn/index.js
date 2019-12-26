@@ -113,7 +113,7 @@ const ReplaceHolder = {
 
 		let splits = input.split("|");
 		let url = splits[0];
-		let txt = splits[1] ? commonReplace(splits[1]) : url;
+		let txt = commonReplace(splits[1]) || url;
 		let title = (splits.length === 4 ? (splits[2] || url) : url);
 		let target = splits[splits.length === 4 ? 3 : 2];
 
@@ -302,6 +302,8 @@ const ITALIC_STR = "<em>$1</em>",
  * 
  */
 function commonReplace(input) {
+
+	if (!input) return input;
 
 	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
 	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线

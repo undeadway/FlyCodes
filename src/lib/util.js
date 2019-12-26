@@ -36,6 +36,12 @@ function compireObjectToXmlAtruibute(input) {
 
 exports.compireObjectToXmlAtruibute = compireObjectToXmlAtruibute;
 
+/*
+ * 这是插片（aspbect）的基类，有三个方法组成，
+ * 1. before 抽象方法。前处理，因为每种插片的逻辑都不一致，所以需要每个子类自行实现
+ * 2. replace 插片内容的替换方法，不需要子类重写
+ * 3. after 后处理，将所有插片内容还原为 html 可显示内容
+ */
 exports.AspectBase = (key) => {
 
 	let array = [];

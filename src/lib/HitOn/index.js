@@ -109,7 +109,7 @@ function replaceSrcLinks() {
 }
 
 const ReplaceHolder = {
-	'#': (input) => { // 链接  [#](url|txt|title|target)
+	'#': (input) => { // 链接 [#](url|txt|title|target)
 
 		let splits = input.split("|");
 		let url = splits[0];
@@ -117,22 +117,20 @@ const ReplaceHolder = {
 		let title = (splits.length === 4 ? (splits[2] || url) : url);
 		let target = splits[splits.length === 4 ? 3 : 2];
 
-		let outs = `<a href="${url}" title="${title}"`;
-		if (target) {
-			outs += ` target="_${target}"`;
+		if (!target || target === 'new') { // 目标在新页面中打开，或者写 new 的时候也在新页面打开
+			target = 'blank';
 		}
-		outs += `>${txt}</a>`;
 
-		return outs;
+		return `<a href="${url}" title="${title}" target="_${target}">${txt}</a>`;
 	},
-	"@": (input) => { // 邮件  [@](url|title)
+	"@": (input) => { // 邮件 [@](url|title)
 		let splits = input.split("|");
 		let url = splits[0];
 		let title = splits[1] || url;
 
 		return `<a href="mailto:${url}">${title}</a>`;
 	},
-	"$": (input) => { // 图像  [$](url|title|width|height)
+	"$": (input) => { // 图像 [$](url|title|width|height)
 
 		let splits = input.split("|");
 
@@ -151,7 +149,7 @@ const ReplaceHolder = {
 
 		return outs;
 	},
-	"V": (input) => { // 视频  [V](url)
+	"V": (input) => { // 视频 [V](url)
 
 		let inputArr = input.split("|");
 		let url = inputArr.shift();
@@ -161,7 +159,7 @@ const ReplaceHolder = {
 
 		return util.compireH5Video(url, args);
 	},
-	"A": (input) => { // 音频  [A](url)
+	"A": (input) => { // 音频 A](url)
 		return util.compireH5Audio(input);
 	}
 };
@@ -352,6 +350,7 @@ const commons = module.exports = require("./../commons").create((input) => {
 	return input;
 }, {
 	object: [
+		// 引用
 		{
 			regexp: /\[\[((.|\s)*?)\]\]/,
 			tag: {
@@ -363,6 +362,7 @@ const commons = module.exports = require("./../commons").create((input) => {
 				}
 			}
 		},
+		// 注音
 		{
 			regexp: /{{((.|\s)*?)}}/,
 			tag: {
@@ -394,6 +394,9 @@ const commons = module.exports = require("./../commons").create((input) => {
 	}
 });
 
+/*
+ * 目前不实现清除样式
+ */
 commons.clear = (str) => {
 	return str;
 };

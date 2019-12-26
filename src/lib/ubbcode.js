@@ -101,8 +101,8 @@ const replaceImg = (function () {
 		}
 
 		// 不带属性的两种写法
-		str = str.replace(IMG_LINK_WITH_NONE_REGX, IMG_LINK_WITH_NONE_STR); //[img]src[img]
-		str = str.replace(IMG_LINK_WITH_SRC_REGX, IMG_LINK_WITH_SRC_STR); //[img=src]title[img]
+		str = str.replace(IMG_LINK_WITH_NONE_REGX, IMG_LINK_WITH_NONE_STR); // [img]src[img]
+		str = str.replace(IMG_LINK_WITH_SRC_REGX, IMG_LINK_WITH_SRC_STR); // [img=src]title[img]
 
 		return str;
 	};
@@ -110,13 +110,16 @@ const replaceImg = (function () {
 
 const replaceList = function () {
 
+	const olTag = Coralian.constants.HtmlTag.OL;
+	const LINE_MARK = "[*]";
+
 	function _replaceList(inner, tag) {
 
-		tag = tag || 'ul';
+		tag = tag || Coralian.constants.HtmlTag.UL;
 
 		if (String.isEmpty(inner)) return inner;
 
-		inner = inner.split("[*]");
+		inner = inner.split(LINE_MARK);
 		inner.shift(); // 因为 split 之后，第一个 [*] 之前的空白也会被算作一行，所以这里直接去掉
 
 		let output = "<" + tag + "><li>" + inner.join("</li><li>") + "</li></" + tag + ">";
@@ -174,22 +177,22 @@ const replaceList = function () {
 					break;
 				case 'α':
 					className += "greek";
-					tag = "ol";
+					tag = olTag;
 					break;
 				case '一':
 					className += "shuzi";
-					tag = "ol";
+					tag = olTag;
 					break;
 				case 'あ':
 					className += "hira";
-					tag = "ol";
+					tag = olTag;
 					break;
 				case 'ア':
 					className += "kata";
-					tag = "ol";
+					tag = olTag;
 					break;
 				default:
-					tag = "ol";
+					tag = olTag;
 					className += type;
 					break;
 			}

@@ -77,8 +77,8 @@ module.exports = {
 
 		return {
 			toHTML: (str, plugIns) => {
-				let { queue, aspect, object } = plugIns;
 
+				let { queue, aspect, object } = plugIns || {};
 				let aspects = [];
 
 				if (aspect) { // 定制插片前处理

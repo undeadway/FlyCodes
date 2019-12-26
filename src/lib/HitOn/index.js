@@ -109,11 +109,11 @@ function replaceSrcLinks() {
 }
 
 const ReplaceHolder = {
-	'#': input => { // 链接  [#](url|txt|title|target)
+	'#': (input) => { // 链接  [#](url|txt|title|target)
 
 		let splits = input.split("|");
 		let url = splits[0];
-		let txt = splits[1] || url;
+		let txt = commonReplace(splits[1]) || url;
 		let title = (splits.length === 4 ? (splits[2] || url) : url);
 		let target = splits[splits.length === 4 ? 3 : 2];
 
@@ -125,14 +125,14 @@ const ReplaceHolder = {
 
 		return outs;
 	},
-	"@": input => { // 邮件  [@](url|title)
+	"@": (input) => { // 邮件  [@](url|title)
 		let splits = input.split("|");
 		let url = splits[0];
 		let title = splits[1] || url;
 
 		return `<a href="mailto:${url}">${title}</a>`;
 	},
-	"$": input => { // 图像  [$](url|title|width|height)
+	"$": (input) => { // 图像  [$](url|title|width|height)
 
 		let splits = input.split("|");
 
@@ -151,7 +151,7 @@ const ReplaceHolder = {
 
 		return outs;
 	},
-	"V": input => { // 视频  [V](url)
+	"V": (input) => { // 视频  [V](url)
 
 		let inputArr = input.split("|");
 		let url = inputArr.shift();
@@ -161,7 +161,7 @@ const ReplaceHolder = {
 
 		return util.compireH5Video(url, args);
 	},
-	"A": input => { // 音频  [A](url)
+	"A": (input) => { // 音频  [A](url)
 		return util.compireH5Audio(input);
 	}
 };
@@ -200,7 +200,7 @@ function replaceReference(input) {
 
 	let tags = new Set(), index = 1;
 
-	while((matches = input.match(REFERENCE_REGX)) !== null) {
+	while ((matches = input.match(REFERENCE_REGX)) !== null) {
 
 		let part = matches[0];
 		let tag = matches[1];
@@ -240,21 +240,21 @@ function replaceAlign() {
 	align.before = input => {
 		while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
 
-			let part = matches[0];
+			let part = commpmReplace(matches[0]);
 			let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}
 
 		while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
 
-			let part = matches[0];
+			let part = commpmReplace(matches[0]);
 			let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}
 
 		while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
 
-			let part = matches[0];
+			let part = commpmReplace(matches[0]);
 			let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}
@@ -296,6 +296,23 @@ const ITALIC_STR = "<em>$1</em>",
 	H2_STR = "<h1 class=\"h2\">$1</h1>",
 	H1_STR = "<h1 class=\"h1\">$1</h1>";
 
+/**
+ * 这里的替换在任何位置都可以用到，比如：
+ * 链接中的文字
+ * 
+ */
+function commonReplace(input) {
+
+	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
+	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
+	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
+	input = input.replace(DEL_LINE_REGX, DEL_LINE_STR); // 删除线
+	input = input.replace(FONT_SIZE_REGX, FONT_SIZE_STR); // 字号
+	input = replaceColor(input); // 颜色
+
+	return input;
+}
+
 const commons = module.exports = require("./../commons").create((input) => {
 
 	input = input.replace(COMMENT_REGX, String.BLANK); // 去掉注释
@@ -308,18 +325,11 @@ const commons = module.exports = require("./../commons").create((input) => {
 	input = escape.before(input);
 	input = align.before(input);
 
-	input = input.replace(ITALIC_REGX, ITALIC_STR); // 斜体字
-	input = input.replace(INS_LINE_REGX, INS_LINE_STR); // 下划线
+	input = commonReplace(input);
 
 	input = replaceQuote(input); // 引用
-	input = input.replace(BOLD_REGX, BOLD_STR); // 粗体字
-	input = input.replace(DEL_LINE_REGX, DEL_LINE_STR); // 删除线
 	input = replaceList(input); // 列表
 	input = replaceTable(input); // 表格
-
-	input = input.replace(FONT_SIZE_REGX, FONT_SIZE_STR); // 字号
-
-	input = replaceColor(input); // 颜色
 
 	input = replaceReference(input); // 参考链接
 
@@ -339,48 +349,48 @@ const commons = module.exports = require("./../commons").create((input) => {
 
 	return input;
 }, {
-		object: [
-			{
-				regexp: /\[\[((.|\s)*?)\]\]/,
-				tag: {
-					start: "[[",
-					end: "]]",
-					html: "pre",
-					attrs: {
-						'class': 'pre'
-					}
-				}
-			},
-			{
-				regexp: /{{((.|\s)*?)}}/,
-				tag: {
-					start: '{{',
-					end: '}}',
-					html: 'ruby'
-				},
-				replace: {
-					start: {
-						from: /\(/g,
-						to: "<rp>(</rp><rt>"
-					},
-					end: {
-						from: /\)/g,
-						to: "</rt><rp>)</rp>"
-					}
+	object: [
+		{
+			regexp: /\[\[((.|\s)*?)\]\]/,
+			tag: {
+				start: "[[",
+				end: "]]",
+				html: "pre",
+				attrs: {
+					'class': 'pre'
 				}
 			}
-		],
-		aspect: {
-			simpleLineCode: {
-				regexp: /`([^`]+?)`/,
-				tag: {
-					start: "`",
-					end: "`"
-				}
+		},
+		{
+			regexp: /{{((.|\s)*?)}}/,
+			tag: {
+				start: '{{',
+				end: '}}',
+				html: 'ruby'
 			},
-			escapeSequence: /\\(\S)/
+			replace: {
+				start: {
+					from: /\(/g,
+					to: "<rp>(</rp><rt>"
+				},
+				end: {
+					from: /\)/g,
+					to: "</rt><rp>)</rp>"
+				}
+			}
 		}
-	});
+	],
+	aspect: {
+		simpleLineCode: {
+			regexp: /`([^`]+?)`/,
+			tag: {
+				start: "`",
+				end: "`"
+			}
+		},
+		escapeSequence: /\\(\S)/
+	}
+});
 
 commons.clear = (str) => {
 	return str;

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HitOn 帮助文档</title>
+<script type="text/javascript" src="http://res.waygc.net/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="http://waygc.net/res/js/coralian.js"></script>
+<script type="text/javascript" src="http://waygc.net/res/js/coralian.client.js"></script>
+<script type="text/javascript" src="../dist/FlyCodes.js"></script>
+<script type="text/javascript" src="./FlyHighLighter.js"></script>
+<link rel="stylesheet" type="text/css" href="./FlyShow.css" />
+<link rel="stylesheet" type="text/css" href="./FlyHighLighter.css" />
+<style type="text/css">
+.table_comment{width:150px;}
+.table_view{width:600px;}
+.table_name pre{
+white-space: pre-wrap;
+word-wrap: break-word;}
+</style>
+</head>
+<body>
+<div id="box">
+<div id="about0"></div>
+<div>
+<br />
+关于<code>HitOn</code>的具体功能，参见下表
+<table class="table" id="table"></table>
+<script type="text/javascript">
+	FlyCodes.setHighLighter(FlyHighLighter.execute);
+	var hitOnReplacer = FlyCodes.toHTML;
+	var newXmlWrapper = Coralian.dom.newXmlWrapper;
+	var htmlEscape = Coralian.ReplaceHolder.htmlEscape;
+
+var str = [`
+
+>>[$](./HitOn.jpg|HitOn)<<
+
+?(48:!关于\`HitOn\`!)
+
+\`HitOn\`是我之前在写 [#](http://waygc.net/blog/read/1481118431613|凑热闹也来聊聊 Markdown|blank) 的时候，开玩笑说自己也能发明一个轻量级标记语言。
+之后在无聊的时候，就想着是不是真的能去实现一个标记语言来玩玩呢？
+于是，就有了现在的\`HitOn\`。
+
+而且自己最近也在把一些既存的博客改写或者纯粹就是用\`HitOn\`来新写博客,下图是一个数据的统计。
+[$](./hiton_count.png|使用 HitOn 的博客数量统计)
+虽然绝对量还不多，不过\`HitOn\`自身也没有完成最后的开发，依然有数不清的Bug，更兼不过是自己的一个小玩具所以这点数量已经足够了。而且能展示和之前我用\`UBB\`写出来的博客一样的效果，那就是对\`HitOn\`最好的肯定了。
+不过，因为定位是轻量级的标记语言，所以整体的能力，还是非常弱的。
+
+但因为这也就是我图个乐子写的，所以什么时候支持，我也不知道……
+
+以及，FlyEditor 的前台编辑器尚不支持 图像化 HitOn 输入，得手写。
+不过，作为一个码农，手写点代码，应该不成问题吧？
+反正我自己造的玩具，友好度就不考虑了吧～`
+];
+	(function() {
+		for (var i = 0, len = str.length; i < len; i++) {
+			var about = document.getElementById("about" + i);
+			var text = str[i];
+			about.innerHTML = hitOnReplacer(text, 'HitOn');
+		}
+
+var hitOnObj = [
+	 ["/斜体字/","斜体字"],
+	 ["!粗体字!","粗体字"],
+	 ["-删除线-","删除线"],
+	 ["_下划线_","下划线"],
+	 ["###### 6级标题","6级标题"],
+	 ["##### 5级标题","5级标题"],
+	 ["#### 4级标题","4级标题"],
+	 ["### 3级标题","3级标题"],
+	 ["## 2级标题","2级标题"],
+	 ["# 1级标题","1级标题"],
+	 ["{{注音(zhuyin)}}","注音"],
+	 ["[[预定义段落\n这里就是第二行\n\n中间空两行\n\n<br \\/>标签无效]]","预定义段落"],
+	 ["[#](https://www.baidu.com)","超链接"],
+	 ["[$](http://waygc.net/res/imgs/LOGO.png)","图像"],
+	 ["[@](undeadway@163.com)","邮件"],
+	 ["[V](https://v.qq.com/txp/iframe/player.html?vid=e0866rwgz0y|width=500|height=400)","视频"],
+	 ["```javascript\nvar a = 'a';```","代码（依赖插件实现）"],
+	 ["1. aaa\n2. bbb\n3. ccc\n","列表"],
+	 ["|aaa|bbb|ccc|\n|---|---|---|\n|111|222|333|\n|abc|def|ghi|\n","表格"],
+	 ["?(48:关于HitOn)","字体字号"],
+	 ["引用前\n\n>引用内容\n>引用引用\n>\n>>(引用标题)\n>>双重引用\n引用后","引用"],
+	["前文字\n\n>>文字\n\n居中<<\n\n后文字","文字居中"],
+	 ["前文字\n\n|:文字居左<<\n\n后文字","文字居左"],
+	 ["前文字\n\n>>文字居右:|\n\n后文字","文字居右"],
+	["`单行 代码`","单行代码"]
+];
+
+		var table = document.getElementById("table");
+		
+			table.appendChild(newXmlWrapper('tr')
+				.add(newXmlWrapper('td', {'class': "table_comment"}).add("标题"))
+				.add(newXmlWrapper('td', {'class': "table_name"}).add("源代码"))
+				.add(newXmlWrapper('td', {'class': "table_view"}).add("显示效果"))
+				.add(newXmlWrapper('td', {'class': "table_html"}).add("HTML代码")).render());
+
+		for (let i = 0, len = hitOnObj.length; i < len;i++) {
+			
+			let line = hitOnObj[i][0];
+			let view = hitOnReplacer(line, 'HitOn');
+
+			table.appendChild(newXmlWrapper('tr')
+				.add(newXmlWrapper('td', {'class': "table_comment"}).add(hitOnObj[i][1]))
+				.add(newXmlWrapper('td', {'class': "table_name"}).add(newXmlWrapper('pre').add(line)))
+				.add(newXmlWrapper('td', {'class': "table_view"}).add(view, false))
+				.add(newXmlWrapper('td', {'class': "table_html"}).add(view))//htmlEscape(view)
+				.render());
+		}
+	})();
+</script>
+</body>
+</html>
+

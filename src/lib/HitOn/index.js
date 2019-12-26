@@ -240,21 +240,21 @@ function replaceAlign() {
 	align.before = input => {
 		while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
 
-			let part = commpmReplace(matches[0]);
+			let part = commonReplace(matches[0]);
 			let str = part.replace(CENTER_ALIGN_REGX, CENTER_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}
 
 		while ((matches = input.match(LEFT_ALIGN_REGX)) !== null) {
 
-			let part = commpmReplace(matches[0]);
+			let part = commonReplace(matches[0]);
 			let str = part.replace(LEFT_ALIGN_REGX, LEFT_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}
 
 		while ((matches = input.match(RIGHT_ALIGN_REGX)) !== null) {
 
-			let part = commpmReplace(matches[0]);
+			let part = commonReplace(matches[0]);
 			let str = part.replace(RIGHT_ALIGN_REGX, RIGHT_ALIGN_STR);
 			input = align.replace(input, part, str);
 		}

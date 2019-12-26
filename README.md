@@ -4,7 +4,7 @@
 这是一个前台富文本编辑器的代码解析器。
 
 ## 产物
-最终生成`FlyCodes.js`和`HitOn.js`两个文件。  
+最终生成 `FlyCodes.js` 和 `HitOn.js` 两个文件。  
 FlyCodes.js 能用于浏览器，也可用于node端。
 
 ### 安装
@@ -21,12 +21,12 @@ node 端只要执行`npm install flycodes`命令即可。
 ### HitOn
 ![](./demo/HitOn.jpg)
 HitOn是我自己开发的一个类Markdown文本标记语言。  
-可以独立于FlyCodes使用。[介绍看这里（中文）](http://wpl.waygc.net#prj=hiton)  
-虽然HitOn 可以独立于FlyCodes使用，但FlyCodes已经包含HitOn的实现，所以如果已经下载了`FlyCodes.js`，则不用再下载`HitOn.js`。  
-node 端的 `HitOn`没有单独创建工程，直接引用`FlyCodes`或者将编译好的 `HitOn.js`导入到工程中即可。
+可以独立于FlyCodes使用。[介绍看这里（中文）](http://codes.waygc.net/fly/HitOn.helper.html)  
+虽然HitOn 可以独立于 FlyCodes 使用，但 FlyCodes 已经包含 HitOn 的实现，所以如果已经下载了 `FlyCodes.js` ，则不用再下载 `HitOn.js` 。  
+node 端的 `HitOn` 没有单独创建工程，直接引用 `FlyCodes` 或者将编译好的 `HitOn.js` 导入到工程中即可。
 
-#### 旧版本兼容
-HitOn维持旧版本兼容（此处特指HitOn)。
+## 旧版本兼容
+FlyCodes 维持对旧版本的兼容，但不包含 HitOn 。
 
 
 # English
@@ -51,5 +51,5 @@ At the browser, copy the output files of dist folder to script folder.
 ### HitOn
 
 HitOn is a markdown likely text mark language.  
-It could used without FlyCodes. [See about here(Chinese)](http://wpl.waygc.net#prj=hiton)HitOn)
+It could used without FlyCodes. [See about here(Chinese)](http://codes.waygc.net/fly/HitOn.helper.html)  
 Although, `HitOn` could used independently, but `FlyCodes.js` has contaned it. 

@@ -41,6 +41,7 @@ exports.AspectBase = (key) => {
 	let array = [];
 
 	return {
+		// before 方法需要每个子类自行实现
 		replace: (input, part, str) => {
 
 			input = input.replace(part, `{${key}~${array.length}}`);

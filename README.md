@@ -1,5 +1,3 @@
-![](./demo/HitOn.jpg)
-
 # Chinese
 
 ## 关于
@@ -21,7 +19,7 @@ node 端只要执行`npm install flycodes`命令即可。
 ```
 
 ### HitOn
-
+![](./demo/HitOn.jpg)
 HitOn是我自己开发的一个类Markdown文本标记语言。  
 可以独立于FlyCodes使用。[介绍看这里（中文）](http://wpl.waygc.net#prj=hiton)  
 虽然HitOn 可以独立于FlyCodes使用，但FlyCodes已经包含HitOn的实现，所以如果已经下载了`FlyCodes.js`，则不用再下载`HitOn.js`。  

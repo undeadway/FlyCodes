@@ -267,7 +267,7 @@ const replaceH5Video = (function () {
 
 		if (arguments.length === 1) {
 
-			while((matched = str.match(REGEX_H5VIDEO)) !== null) {
+			while ((matched = str.match(REGEX_H5VIDEO)) !== null) {
 				str = __replace(str, H5_FORMAT, null, null, matched[1]);
 			}
 
@@ -425,44 +425,44 @@ const commons = module.exports = require("./commons").create((str) => {
 
 	return str;
 }, {
-		object: [
-			{
-				regexp: /\[pre\]((.|\s)*?)\[\/pre\]/,
-				tag: {
-					start: "[pre]",
-					end: "[/pre]",
-					html: "pre"
-				}
-			},
-			{
-				regexp: /\[phonics\]((.|\s)*?)\[\/phonics\]/,
-				tag: {
-					start: '[phonics]',
-					end: '[/phonics]',
-					html: 'ruby'
-				},
-				replace: {
-					start: {
-						from: /\(/g,
-						to: "<rp>(</rp><rt>"
-					},
-					end: {
-						from: /\)/g,
-						to: "</rt><rp>)</rp>"
-					}
-				}
+	object: [
+		{
+			regexp: /\[pre\]((.|\s)*?)\[\/pre\]/,
+			tag: {
+				start: "[pre]",
+				end: "[/pre]",
+				html: "pre"
 			}
-		],
-		aspect: {
-			simpleLineCode: {
-				regexp: /\[code\]((.)*?)\[\/code\]/,
-				tag: {
-					start: "[code]",
-					end: "[/code]"
-				}
+		},
+		{
+			regexp: /\[phonics\]((.|\s)*?)\[\/phonics\]/,
+			tag: {
+				start: '[phonics]',
+				end: '[/phonics]',
+				html: 'ruby'
 			},
+			replace: [
+				{
+					from: /\(/g,
+					to: "<rp>(</rp><rt>"
+				},
+				{
+					from: /\)/g,
+					to: "</rt><rp>)</rp>"
+				}
+			]
 		}
-	});
+	],
+	aspect: {
+		simpleLineCode: {
+			regexp: /\[code\]((.)*?)\[\/code\]/,
+			tag: {
+				start: "[code]",
+				end: "[/code]"
+			}
+		},
+	}
+});
 
 commons.clear = (str) => {
 	str = str.replace(/\[\/(size|color|font|backcolor)\]/g, EMPTY_STRING);

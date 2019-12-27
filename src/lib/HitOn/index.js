@@ -159,7 +159,7 @@ const ReplaceHolder = {
 
 		return util.compireH5Video(url, args);
 	},
-	"A": (input) => { // 音频 A](url)
+	"A": (input) => { // 音频 [A](url)
 		return util.compireH5Audio(input);
 	}
 };
@@ -297,7 +297,7 @@ const ITALIC_STR = "<em>$1</em>",
 /**
  * 这里的替换在任何位置都可以用到，比如：
  * 链接中的文字
- * 
+ * 对齐的文字
  */
 function commonReplace(input) {
 
@@ -325,7 +325,7 @@ const commons = module.exports = require("./../commons").create((input) => {
 	input = escape.before(input);
 	input = align.before(input);
 
-	input = commonReplace(input);
+	input = commonReplace(input); // 调用公共替换
 
 	input = replaceQuote(input); // 引用
 	input = replaceList(input); // 列表
@@ -370,16 +370,15 @@ const commons = module.exports = require("./../commons").create((input) => {
 				end: '}}',
 				html: 'ruby'
 			},
-			replace: {
-				start: {
+			replace: [
+				{
 					from: /\(/g,
 					to: "<rp>(</rp><rt>"
-				},
-				end: {
+				}, {
 					from: /\)/g,
 					to: "</rt><rp>)</rp>"
 				}
-			}
+			]
 		}
 	],
 	aspect: {

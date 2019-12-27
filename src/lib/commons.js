@@ -19,8 +19,9 @@ function replaceObjects(str, arg) {
 		}
 
 		if (arg.replace) { // 内部还有切换需求的时候进行处理
-			inner = inner.replace(arg.replace.start.from, arg.replace.start.to);
-			inner = inner.replace(arg.replace.end.from, arg.replace.end.to);
+			Array.forEach(arg.replace, (i, item) => {
+				inner = inner.replace(item.from, item.to);
+			});
 		}
 
 		let output = `<${htmlTag}${attrs}>${inner}</${htmlTag}>`;
@@ -68,11 +69,11 @@ module.exports = {
 		function replaceURI(str) {
 
 			try {
-				str = decodeURIComponent(str);// 最后的转义出处理
+				return decodeURIComponent(str);// 最后的转义出处理
 			} catch (e) {
 				// 如果出错，就当不存在
+				return str;
 			}
-			return str;
 		}
 
 		return {

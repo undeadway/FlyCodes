@@ -38,7 +38,8 @@ const BUILT_IN_ASPECTS = {
 		let lineCode = util.AspectBase('linecode');
 		lineCode.before = input => {
 			while (arg.regexp.test(input)) {
-				let obj = RegExp.$1;
+				let obj = RegExp.$1
+				obj = util.deHtmlTag(obj);// 去掉 HTML 结构
 				let part = arg.tag.start + obj + arg.tag.end;
 				let output = `<code class="code">${obj}</code>`;
 				input = lineCode.replace(input, part, output);

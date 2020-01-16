@@ -374,7 +374,8 @@ const commons = module.exports = require("./../commons").create((input) => {
 				{
 					from: /\(/g,
 					to: "<rp>(</rp><rt>"
-				}, {
+				},
+				{
 					from: /\)/g,
 					to: "</rt><rp>)</rp>"
 				}

@@ -21,7 +21,7 @@
   },
   "homepage": "http://codes.waygc.net/fly/FlyCodes.helper.html",
   "dependencies": {
-    "coralian": "0.0.14"
+    "coralian": "0.0.18"
   },
   "devDependencies": {
     "flyhighlighter": "0.0.3"

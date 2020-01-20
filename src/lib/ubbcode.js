@@ -1,6 +1,6 @@
 ﻿
 const EMPTY_STRING = String.BLANK;
-const util = require("./util");
+const { compireH5Video, parseEqualToObject } = require("./util");
 
 const replaceImg = (function () {
 
@@ -238,15 +238,15 @@ const replaceH5Video = (function () {
 				framespacing: 0
 			};
 
-			return util.compireH5Video(url, args);
+			return compireH5Video(url, args);
 		},
 		youku: function ({ url }) {
 			let src = `http://player.youku.com/embed/${url}`;
 
-			return util.compireH5Video(src);
+			return compireH5Video(src);
 		},
 		common: (url, args) => {
-			return util.compireH5Video(url, args);
+			return compireH5Video(url, args);
 		}
 	};
 	const REGEX_H5VIDEO_ARGS = /\[video=([^\]]+)\]([^\]]+)\[\/video\]/, H5_FORMAT_ARGS = "[video=%1]%2[/video]", NAME_REGX = /(([^\]]+))*\(([^\]]+)\)/;
@@ -285,7 +285,7 @@ const replaceH5Video = (function () {
 				let argMarch = title.match(NAME_REGX);
 				if (argMarch !== null) {
 					name = argMarch[1];
-					util.parseEqualToObject(argMarch[3].split(","), args);
+					parseEqualToObject(argMarch[3].split(","), args);
 				}
 
 				str = __replace(str, H5_FORMAT_ARGS, title, name, url, args);

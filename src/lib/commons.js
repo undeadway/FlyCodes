@@ -1,5 +1,5 @@
 
-const util = require("./util");
+const { AspectBase, decodeHtmlTag } = require("./util");
 
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
@@ -35,11 +35,11 @@ function replaceObjects(str, arg) {
 const BUILT_IN_ASPECTS = {
 	simpleLineCode: (arg) => {
 
-		let lineCode = util.AspectBase('linecode');
+		let lineCode = AspectBase('linecode');
 		lineCode.before = input => {
 			while (arg.regexp.test(input)) {
 				let obj = RegExp.$1
-				let deHtmlObj = util.deHtmlTag(obj);// 去掉 HTML 结构
+				let deHtmlObj = decodeHtmlTag(obj);// 去掉 HTML 结构
 				let part = arg.tag.start + obj + arg.tag.end;
 				let output = `<code class="code">${deHtmlObj}</code>`;
 				input = lineCode.replace(input, part, output);
@@ -51,7 +51,7 @@ const BUILT_IN_ASPECTS = {
 	},
 	escapeSequence: (arg) => {
 
-		let backSlash = util.AspectBase('backslash');
+		let backSlash = AspectBase('backslash');
 		backSlash.before = input => {
 			while (arg.test(input)) {
 				let output = RegExp.$1;

@@ -65,7 +65,7 @@ exports.AspectBase = (key) => {
 	}
 };
 
-exports.deHtmlTag = (str) => {
+exports.decodeHtmlTag = (str) => {
 
 	str = str.replace(/</g, "&lt;");
 	str = str.replace(/>/g, "&gt;");

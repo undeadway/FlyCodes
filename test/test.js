@@ -60,6 +60,8 @@ let html = `<html><head>
 <link rel="stylesheet" type="text/css" href="./read.css" />
 <link rel="stylesheet" type="text/css" href="./FlyHighLighter.css" />
 </head>
-<body>${output}</body></html>`;
+<body>
+${output}
+</body></html>`;
 
 fs.writeFileSync("./test/output.html", html);

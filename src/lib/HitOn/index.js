@@ -88,6 +88,13 @@ function replaceColor(input) {
 	return input;
 }
 
+/**
+ * #: 普通链接
+ * @: 邮箱
+ * $: 图像
+ * V: H5视频
+ * A: H5音频
+ */
 const LINK_REGX = /\[(#|@|\$|V|A)\]\(((.|\s)*?)\)/;
 function replaceSrcLinks() {
 

@@ -1,8 +1,8 @@
 ﻿/**
- * FlyEditor 的主逻辑文件。
+ * FlyCodes 的主逻辑文件。
  * 对已经编码完成的输入进行解析最终输出可供显示的 HTML
  *
- * 内置了 UBB 解析和 HitOn 解析两种解析方式
+ * 内置了 UBB 和 HitOn 解析两种解析方式
  */
 const util = require("./lib/util");
 const HITON_STR = "HitOn", UBB_STR = "UBB";

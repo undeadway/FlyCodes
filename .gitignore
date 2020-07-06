@@ -2,3 +2,4 @@ node_modules
 test/test.hiton
 test/output.html
 package-lock.json
+.vscode

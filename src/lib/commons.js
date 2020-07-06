@@ -64,84 +64,87 @@ const BUILT_IN_ASPECTS = {
 	}
 };
 
-let forwardCompatibility = true; // 默认开启向前兼容
+module.exports = (() => {
 
-module.exports = {
-	// 支持是否开启兼容模式
-	isForwardCompatibility: () => {
-		return forwardCompatibility;
-	},
-	isForwardCompatibility: (compatibility) => {
-		forwardCompatibility = compatibility;
-	},
-	create: (parse, arg) => {
+	let forwardCompatibility = true; // 默认开启向前兼容
 
-		function replaceURI(str) {
-
-			try {
-				return decodeURIComponent(str);// 最后的转义出处理
-			} catch (e) {
-				// 如果出错，就当不存在
-				return str;
-			}
-		}
-
-		return {
-			toHTML: (str, plugIns) => {
-
-				let { queue, aspect, object } = plugIns || {};
-				let aspects = [];
-
-				if (aspect) { // 定制插片前处理
-					Array.forEach(aspect, (i, a) => {
-						let aspect = a.method(a.object);
-						str = aspect.before(str);
-						aspects.push(aspect);
-					});
+	return {
+		// 支持是否开启兼容模式
+		isForwardCompatibility: () => {
+			return forwardCompatibility;
+		},
+		setForwardCompatibility: (compatibility) => {
+			forwardCompatibility = compatibility;
+		},
+		create: (parse, arg) => {
+	
+			function replaceURI(str) {
+	
+				try {
+					return decodeURIComponent(str);// 最后的转义出处理
+				} catch (e) {
+					// 如果出错，就当不存在
+					return str;
 				}
-				if (arg.aspect) { // 内置插片前处理
-					Object.forEach(arg.aspect, (n, o) => {
-						let aspect = BUILT_IN_ASPECTS[n](o);
-						if (aspect) {
+			}
+	
+			return {
+				toHTML: (str, plugIns = {}) => {
+	
+					let { queue, aspect, object } = plugIns;
+					let aspects = [];
+	
+					if (aspect) { // 定制插片前处理
+						Array.forEach(aspect, (i, a) => {
+							let aspect = a.method(a.object);
 							str = aspect.before(str);
 							aspects.push(aspect);
-						}
+						});
+					}
+					if (arg.aspect) { // 内置插片前处理
+						Object.forEach(arg.aspect, (n, o) => {
+							let aspect = BUILT_IN_ASPECTS[n](o);
+							if (aspect) {
+								str = aspect.before(str);
+								aspects.push(aspect);
+							}
+						});
+					}
+	
+					str = parse(str);
+	
+					if (arg.object) { // 内置对象处理
+						Array.forEach(arg.object, (i, o) => {
+							str = replaceObjects(str, o);
+						});
+					}
+					if (object) { // 定制对象处理
+						Array.forEach(object, (i, o) => {
+							str = replaceObjects(str, o);
+						});
+					}
+	
+					// 插片后处理
+					Array.forEach(aspects, (i, a) => {
+						str = a.after(str);
 					});
+	
+					if (arg.queue) { // 内置队列处理
+						Array.forEach(arg.queue, (i, obj) => {
+							str = obj(str);
+						});
+					}
+					if (queue) { // 定制队列处理
+						Array.forEach(queue, (i, obj) => {
+							str = obj(str);
+						});
+					}
+	
+					str = str.replace(NL_REGX, BR_TAG); // 单行换行
+	
+					return replaceURI(str);
 				}
-
-				str = parse(str);
-
-				if (arg.object) { // 内置对象处理
-					Array.forEach(arg.object, (i, o) => {
-						str = replaceObjects(str, o);
-					});
-				}
-				if (object) { // 定制对象处理
-					Array.forEach(object, (i, o) => {
-						str = replaceObjects(str, o);
-					});
-				}
-
-				// 插片后处理
-				Array.forEach(aspects, (i, a) => {
-					str = a.after(str);
-				});
-
-				if (arg.queue) { // 内置队列处理
-					Array.forEach(arg.queue, (i, obj) => {
-						str = obj(str);
-					});
-				}
-				if (queue) { // 定制队列处理
-					Array.forEach(queue, (i, obj) => {
-						str = obj(str);
-					});
-				}
-
-				str = str.replace(NL_REGX, BR_TAG); // 单行换行
-
-				return replaceURI(str);
-			}
+			};
 		}
-	}
-};
+	};
+})();

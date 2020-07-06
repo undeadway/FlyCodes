@@ -1,5 +1,5 @@
 
-const { AspectBase, decodeHtmlTag } = require("./util");
+const { aspectBase, decodeHtmlTag } = require("./util");
 
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
@@ -35,7 +35,7 @@ function replaceObjects(str, arg) {
 const BUILT_IN_ASPECTS = {
 	simpleLineCode: (arg) => {
 
-		let lineCode = AspectBase('linecode');
+		let lineCode = aspectBase('linecode');
 		lineCode.before = input => {
 			while (arg.regexp.test(input)) {
 				let obj = RegExp.$1
@@ -51,7 +51,7 @@ const BUILT_IN_ASPECTS = {
 	},
 	escapeSequence: (arg) => {
 
-		let backSlash = AspectBase('backslash');
+		let backSlash = aspectBase('backslash');
 		backSlash.before = input => {
 			while (arg.test(input)) {
 				let output = RegExp.$1;

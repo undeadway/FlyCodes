@@ -79,7 +79,7 @@ function getPlugIn(name) {
 
 function parseCodes(arg) {
 
-	let codes = util.AspectBase('codes');
+	let codes = util.aspectBase('codes');
 	codes.before = input => {
 		if (highLighter) {
 			while (arg.regexp.test(input)) {

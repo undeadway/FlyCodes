@@ -1,5 +1,5 @@
 
-const { aspectBase, decodeHtmlTag } = require("./util");
+const { aspectBase, decodeHtmlTag, compireObjectToXmlAtruibute } = require("./util");
 
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
@@ -10,7 +10,7 @@ function replaceObjects(str, arg) {
 	while ((matched = str.match(arg.regexp)) !== null) {
 
 		let htmlTag = arg.tag.html;
-		let attrs = util.compireObjectToXmlAtruibute(arg.tag.attrs);
+		let attrs = compireObjectToXmlAtruibute(arg.tag.attrs);
 		let inner = matched[1];
 		let input = arg.tag.start + inner + arg.tag.end;
 		if (htmlTag === PRE_TAG) {

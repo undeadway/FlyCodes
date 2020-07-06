@@ -64,7 +64,16 @@ const BUILT_IN_ASPECTS = {
 	}
 };
 
+let forwardCompatibility = true; // 默认开启向前兼容
+
 module.exports = {
+	// 支持是否开启兼容模式
+	isForwardCompatibility: () => {
+		return forwardCompatibility;
+	},
+	isForwardCompatibility: (compatibility) => {
+		forwardCompatibility = compatibility;
+	},
 	create: (parse, arg) => {
 
 		function replaceURI(str) {

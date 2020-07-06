@@ -6,17 +6,16 @@
  */
 const util = require("./lib/util");
 const HITON_STR = "HitOn", UBB_STR = "UBB";
-
-const parsers = {
-	ubbcode: require("./lib/ubbcode"),
-	HitOn: require("./lib/HitOn/")
-};
+const ubbcode = require("./lib/ubbcode"), HitOn = require("./lib/HitOn/");
+const parsers = { ubbcode, HitOn };
 
 // 这个代理的好处是，不用为每个不同的项目写一个对象，只要写 if/else 就可以了
 const langProxy = new Proxy(parsers, {
 	get: (target, key) => {
-		if (String.startsWith(key, HITON_STR) && key !== HITON_STR) {
-			return require("./lib/HitOn/dist/" + key.split("_")[1]); // 这里是为了保证 HitOn可以向前兼容
+		// 这里是为了保证 HitOn可以向前兼容
+		// 如果不开启向前兼容，则不会去执行旧代码
+		if (HitOn.isForwardCompatibility() && String.startsWith(key, HITON_STR) && key !== HITON_STR) {
+			return require("./lib/HitOn/old/" + key.split("_")[1]); 
 		} else {
 			return target[key];
 		}

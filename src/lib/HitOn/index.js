@@ -399,3 +399,11 @@ const commons = module.exports = require("./../commons").create((input) => {
 commons.clear = (str) => {
 	return str;
 };
+
+commons.getVersion = (version) => {
+	if (!version) {
+		return commons;
+	} else {
+		return require(`./old/${version}`);
+	}
+}

@@ -480,3 +480,7 @@ commons.clear = (str) => {
 
 	return str;
 };
+
+commons.getVerion = () => {
+	return commons;
+}

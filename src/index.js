@@ -1,25 +1,18 @@
 ﻿/**
- * FlyEditor 的主逻辑文件。
+ * FlyCodes 的主逻辑文件。
  * 对已经编码完成的输入进行解析最终输出可供显示的 HTML
  *
- * 内置了 UBB 解析和 HitOn 解析两种解析方式
+ * 内置了 UBB 和 HitOn 解析两种解析方式
  */
 const util = require("./lib/util");
 const HITON_STR = "HitOn", UBB_STR = "UBB";
+const ubbcode = require("./lib/ubbcode"), HitOn = require("./lib/HitOn/");
+const parsers = { ubbcode, HitOn };
 
-const parsers = {
-	ubbcode: require("./lib/ubbcode"),
-	HitOn: require("./lib/HitOn/")
-};
-
-// 这个代理的好处是，不用为每个不同的项目写一个对象，只要写 if/else 就可以了
 const langProxy = new Proxy(parsers, {
 	get: (target, key) => {
-		if (String.startsWith(key, HITON_STR) && key !== HITON_STR) {
-			return require("./lib/HitOn/dist/" + key.split("_")[1]); // 这里是为了保证 HitOn可以向前兼容
-		} else {
-			return target[key];
-		}
+		let [name, version] = key.split("_");
+		return target[name].getVersion(version);
 	}
 });
 
@@ -80,7 +73,7 @@ function getPlugIn(name) {
 
 function parseCodes(arg) {
 
-	let codes = util.AspectBase('codes');
+	let codes = util.aspectBase('codes');
 	codes.before = input => {
 		if (highLighter) {
 			while (arg.regexp.test(input)) {

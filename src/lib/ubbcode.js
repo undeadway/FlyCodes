@@ -14,13 +14,13 @@ const replaceImg = (function () {
 	 * img 标签属性，可以都不出现，或者都出现
 	 * 其中 size 和 width/height 不可以同时出现
 	 * +---------+------------------------------+
-	 * |align	|(left|center|right|justify)   |
+	 * |align    |(left|center|right|justify)   |
 	 * +---------+------------------------------+
-	 * |size	 |(width,height)				|
+	 * |size     |(width,height)                |
 	 * +---------+------------------------------+
-	 * |width	|value						 |
+	 * |width    |value                         |
 	 * +---------+------------------------------+
-	 * |height   |value						 |
+	 * |height   |value                         |
 	 * +---------+------------------------------+
 	 */
 	function _replaceImg(input, output) {
@@ -383,8 +383,7 @@ const BLOCK_OUT_STR = "[$1$2][$3$4",
 	OLD_BOLD_STR = '<strong>$2</strong>',
 	OLD_ITALIC_STR = '<em>$2</em>',
 	TAIL_EXE_STR1_1 = "<$1$2>",
-	TAIL_EXE_STR1_2 = "<$2$3",
-	FONT_REGX_FORMAT_STR = "\\[font=%s\\]";
+	TAIL_EXE_STR1_2 = "<$2$3";
 
 const commons = module.exports = require("./commons").create((str) => {
 
@@ -480,3 +479,7 @@ commons.clear = (str) => {
 
 	return str;
 };
+
+commons.getVerion = () => {
+	return commons;
+}

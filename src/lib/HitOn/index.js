@@ -1,5 +1,5 @@
 
-const { AspectBase, parseEqualToObject, compireH5Video, compireH5Audio } = require("./../util");
+const { aspectBase, parseEqualToObject, compireH5Video, compireH5Audio } = require("./../util");
 const MAIN_QUOT_REGX = /\n(\n(>(.*)\n)+)/,
 	NL_RT_ANGLE_GLOBAL_REGX = /\n>/g;
 const STRING_QUOTE = "引用";
@@ -88,10 +88,17 @@ function replaceColor(input) {
 	return input;
 }
 
+/**
+ * #: 普通链接
+ * @: 邮箱
+ * $: 图像
+ * V: H5视频
+ * A: H5音频
+ */
 const LINK_REGX = /\[(#|@|\$|V|A)\]\(((.|\s)*?)\)/;
 function replaceSrcLinks() {
 
-	let links = AspectBase('links');
+	let links = aspectBase('links');
 	links.before = input => {
 		while (LINK_REGX.test(input)) {
 			let tag = RegExp.$1;
@@ -219,7 +226,7 @@ function replaceReference(input) {
 const ESCAPER_REGX = /\\\//;
 function replaceEscapers() {
 
-	let escapes = AspectBase('escapes');
+	let escapes = aspectBase('escapes');
 	escapes.before = input => {
 		while ((matches = input.match(ESCAPER_REGX)) !== null) {
 			input = escapes.replace(input, matches[0], part);
@@ -232,7 +239,7 @@ function replaceEscapers() {
 
 function replaceAlign() {
 
-	let align = AspectBase('align');
+	let align = aspectBase('align');
 
 	align.before = input => {
 		while ((matches = input.match(CENTER_ALIGN_REGX)) !== null) {
@@ -399,3 +406,11 @@ const commons = module.exports = require("./../commons").create((input) => {
 commons.clear = (str) => {
 	return str;
 };
+
+commons.getVersion = (version) => {
+	if (!version) {
+		return commons;
+	} else {
+		return require(`./old/${version}`);
+	}
+}

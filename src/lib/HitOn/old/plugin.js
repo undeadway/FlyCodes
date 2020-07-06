@@ -1,7 +1,6 @@
 
-let highLighter = FlyHighLighter.execute;
-
-var CodeRegExp = {
+const highLighter = FlyHighLighter.execute;
+const CodeRegExp = {
 	regexp: /```(.*[\r\n]+)((.|\s)*?)```/,
 	code: "$2",
 	name: "$1"

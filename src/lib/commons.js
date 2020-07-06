@@ -1,5 +1,5 @@
 
-const { AspectBase, decodeHtmlTag } = require("./util");
+const { aspectBase, decodeHtmlTag, compireObjectToXmlAtruibute } = require("./util");
 
 const BR_TAG = "<br />";
 const NL_REGX = /\n/g;
@@ -10,7 +10,7 @@ function replaceObjects(str, arg) {
 	while ((matched = str.match(arg.regexp)) !== null) {
 
 		let htmlTag = arg.tag.html;
-		let attrs = util.compireObjectToXmlAtruibute(arg.tag.attrs);
+		let attrs = compireObjectToXmlAtruibute(arg.tag.attrs);
 		let inner = matched[1];
 		let input = arg.tag.start + inner + arg.tag.end;
 		if (htmlTag === PRE_TAG) {
@@ -35,7 +35,7 @@ function replaceObjects(str, arg) {
 const BUILT_IN_ASPECTS = {
 	simpleLineCode: (arg) => {
 
-		let lineCode = AspectBase('linecode');
+		let lineCode = aspectBase('linecode');
 		lineCode.before = input => {
 			while (arg.regexp.test(input)) {
 				let obj = RegExp.$1
@@ -51,7 +51,7 @@ const BUILT_IN_ASPECTS = {
 	},
 	escapeSequence: (arg) => {
 
-		let backSlash = AspectBase('backslash');
+		let backSlash = aspectBase('backslash');
 		backSlash.before = input => {
 			while (arg.test(input)) {
 				let output = RegExp.$1;
@@ -66,9 +66,9 @@ const BUILT_IN_ASPECTS = {
 
 module.exports = {
 	create: (parse, arg) => {
-
+	
 		function replaceURI(str) {
-
+	
 			try {
 				return decodeURIComponent(str);// 最后的转义出处理
 			} catch (e) {
@@ -76,11 +76,11 @@ module.exports = {
 				return str;
 			}
 		}
-
+	
 		return {
-			toHTML: (str, plugIns) => {
+			toHTML: (str, plugIns = {}) => {
 
-				let { queue, aspect, object } = plugIns || {};
+				let { queue, aspect, object } = plugIns;
 				let aspects = [];
 
 				if (aspect) { // 定制插片前处理
@@ -101,7 +101,7 @@ module.exports = {
 				}
 
 				str = parse(str);
-
+	
 				if (arg.object) { // 内置对象处理
 					Array.forEach(arg.object, (i, o) => {
 						str = replaceObjects(str, o);
@@ -133,6 +133,6 @@ module.exports = {
 
 				return replaceURI(str);
 			}
-		}
+		};
 	}
 };

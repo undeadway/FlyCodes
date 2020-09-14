@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 .code pre{font-family:Consolas; font-size:11pt; padding:5px 5px 5px 25px; margin: 0px; max-height:500px; max-width:750px; overflow: auto;
 		background:#49494b;/*#f6feff*/}
-.code ol{display:block; margin:0px; list-style:decimal; margin: 0px;}
+.code ol{display:block; margin:0px; list-style:decimal;}
 .code li{vertical-align:middle; border-left:3px solid #146b00; padding-left:5px; height: 22px; line-height: 22px; color:#f6fffd;}
 .code li:nth-child(2n-1){background:#41535b;}
 

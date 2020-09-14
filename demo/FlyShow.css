@@ -1,19 +1,23 @@
 @CHARSET "UTF-8";
 
+.flycodes{word-wrap: break-word; width:100%; font-size:16px;}
+
 embed{z-index:0;}
-.pre{background:#f9fefc; padding:10px; border:2px solid #eaeaea; width:750px; overflow: auto;
+.pre{background:#f9fefc; padding:10px; border:2px solid #eaeaea; width: calc(100% - 20px); overflow: auto;
 	-moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;
 }
 
 rt{font-size:12px;}
-fieldset{border:1px solid #5eacd1; margin: 10px 5px;  padding: 7px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+fieldset{border:1px solid #5eacd1; padding: 7px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;
+width: calc(100% - 20px);
+}
 fieldset legend{font-weight:bold; color:#014387; border:1px solid #c4c4c4; background: #f9fefc; padding:2px 7px;
 	-moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px; text-shadow:1px 1px 1px #f4ffa8;
 }
 
 .fieldset{background:rgba(250, 249, 239, 0.4);/*#faf9ef;*/
 }
-.fieldset div{max-width:780px; overflow:auto;}
+.fieldset div{overflow:auto;}
 
 /* 这里的 code 是用 code 标签围起来的内容用，和通过 fileset 围起来的代码是两样东西 */
 code{background:#f6feff; font-family:Courier New; padding:2px 4px; margin:0px 4px 2px 4px; border:1px solid #eaeaea;
@@ -27,7 +31,10 @@ code{background:#f6feff; font-family:Courier New; padding:2px 4px; margin:0px 4p
 .h5{font-size:14pt; border-left: 2px solid #60B7DE; margin:12px 0px; padding-left: 4px; padding-bottom: 1px; text-shadow:1px 1px 1px #dddddd;}
 .h6{font-size:12pt; border-left: 1px solid #60B7DE; margin:10px 0px; padding-left: 2px; text-shadow:1px 1px 1px #eeeeee;}
 
-.h1, .h2, .h3, .h4, .h5, .h6{border-bottom: 1px #0080FF dashed; }
+.h1, .h2, .h3, .h4, .h5, .h6{
+	border-bottom: 1px #0080FF dashed;
+	width: calc(100% - 20px);
+}
 
 
 /* 字体 */
@@ -59,104 +66,104 @@ code{background:#f6feff; font-family:Courier New; padding:2px 4px; margin:0px 4p
 .size_72{font-size:72px;}
 
 /* 前景色 */
-.color_FF8080{color:#FF8080}
-.color_FFFF80{color:#FFFF80}
-.color_80FF80{color:#80FF80}
-.color_00FF80{color:#00FF80}
-.color_80FFFF{color:#80FFFF}
-.color_0080FF{color:#0080FF}
-.color_FF80C0{color:#FF80C0}
-.color_FF80FF{color:#FF80FF}
-.color_FF0000{color:#FF0000}
-.color_FFFF00{color:#FFFF00}
-.color_80FF00{color:#80FF00}
-.color_00FF40{color:#00FF40}
-.color_00FFFF{color:#00FFFF}
-.color_0080C0{color:#0080C0}
-.color_8080C0{color:#8080C0}
-.color_FF00FF{color:#FF00FF}
-.color_804040{color:#804040}
-.color_FF8040{color:#FF8040}
-.color_00FF00{color:#00FF00}
-.color_008080{color:#008080}
-.color_004080{color:#004080}
-.color_8080FF{color:#8080FF}
-.color_800040{color:#800040}
-.color_FF0080{color:#FF0080}
-.color_800000{color:#800000}
-.color_FF8000{color:#FF8000}
-.color_008000{color:#008000}
-.color_008040{color:#008040}
-.color_0000FF{color:#0000FF}
-.color_0000A0{color:#0000A0}
-.color_800080{color:#800080}
-.color_8000FF{color:#8000FF}
-.color_400000{color:#400000}
-.color_804000{color:#804000}
-.color_004000{color:#004000}
-.color_004040{color:#004040}
-.color_000080{color:#000080}
-.color_000040{color:#000040}
-.color_400040{color:#400040}
-.color_400080{color:#400080}
-.color_000000{color:#000000}
-.color_808080{color:#808080}
-.color_808040{color:#808040}
-.color_808080{color:#808080}
-.color_408080{color:#408080}
-.color_C0C0C0{color:#C0C0C0}
-.color_400040{color:#400040}
-.color_FFFFFF{color:#FFFFFF}
+.color_FF8080{color:#FF8080;}
+.color_FFFF80{color:#FFFF80;}
+.color_80FF80{color:#80FF80;}
+.color_00FF80{color:#00FF80;}
+.color_80FFFF{color:#80FFFF;}
+.color_0080FF{color:#0080FF;}
+.color_FF80C0{color:#FF80C0;}
+.color_FF80FF{color:#FF80FF;}
+.color_FF0000{color:#FF0000;}
+.color_FFFF00{color:#FFFF00;}
+.color_80FF00{color:#80FF00;}
+.color_00FF40{color:#00FF40;}
+.color_00FFFF{color:#00FFFF;}
+.color_0080C0{color:#0080C0;}
+.color_8080C0{color:#8080C0;}
+.color_FF00FF{color:#FF00FF;}
+.color_804040{color:#804040;}
+.color_FF8040{color:#FF8040;}
+.color_00FF00{color:#00FF00;}
+.color_008080{color:#008080;}
+.color_004080{color:#004080;}
+.color_8080FF{color:#8080FF;}
+.color_800040{color:#800040;}
+.color_FF0080{color:#FF0080;}
+.color_800000{color:#800000;}
+.color_FF8000{color:#FF8000;}
+.color_008000{color:#008000;}
+.color_008040{color:#008040;}
+.color_0000FF{color:#0000FF;}
+.color_0000A0{color:#0000A0;}
+.color_800080{color:#800080;}
+.color_8000FF{color:#8000FF;}
+.color_400000{color:#400000;}
+.color_804000{color:#804000;}
+.color_004000{color:#004000;}
+.color_004040{color:#004040;}
+.color_000080{color:#000080;}
+.color_000040{color:#000040;}
+.color_400040{color:#400040;}
+.color_400080{color:#400080;}
+.color_000000{color:#000000;}
+.color_808080{color:#808080;}
+.color_808040{color:#808040;}
+.color_808080{color:#808080;}
+.color_408080{color:#408080;}
+.color_C0C0C0{color:#C0C0C0;}
+.color_400040{color:#400040;}
+.color_FFFFFF{color:#FFFFFF;}
 
 /* 背景色 */
-.bgcolor_FF8080{background:#FF8080}
-.bgcolor_FFFF80{background:#FFFF80}
-.bgcolor_80FF80{background:#80FF80}
-.bgcolor_00FF80{background:#00FF80}
-.bgcolor_80FFFF{background:#80FFFF}
-.bgcolor_0080FF{background:#0080FF}
-.bgcolor_FF80C0{background:#FF80C0}
-.bgcolor_FF80FF{background:#FF80FF}
-.bgcolor_FF0000{background:#FF0000}
-.bgcolor_FFFF00{background:#FFFF00}
-.bgcolor_80FF00{background:#80FF00}
-.bgcolor_00FF40{background:#00FF40}
-.bgcolor_00FFFF{background:#00FFFF}
-.bgcolor_0080C0{background:#0080C0}
-.bgcolor_8080C0{background:#8080C0}
-.bgcolor_FF00FF{background:#FF00FF}
-.bgcolor_804040{background:#804040}
-.bgcolor_FF8040{background:#FF8040}
-.bgcolor_00FF00{background:#00FF00}
-.bgcolor_008080{background:#008080}
-.bgcolor_004080{background:#004080}
-.bgcolor_8080FF{background:#8080FF}
-.bgcolor_800040{background:#800040}
-.bgcolor_FF0080{background:#FF0080}
-.bgcolor_800000{background:#800000}
-.bgcolor_FF8000{background:#FF8000}
-.bgcolor_008000{background:#008000}
-.bgcolor_008040{background:#008040}
-.bgcolor_0000FF{background:#0000FF}
-.bgcolor_0000A0{background:#0000A0}
-.bgcolor_800080{background:#800080}
-.bgcolor_8000FF{background:#8000FF}
-.bgcolor_400000{background:#400000}
-.bgcolor_804000{background:#804000}
-.bgcolor_004000{background:#004000}
-.bgcolor_004040{background:#004040}
-.bgcolor_000080{background:#000080}
-.bgcolor_000040{background:#000040}
-.bgcolor_400040{background:#400040}
-.bgcolor_400080{background:#400080}
-.bgcolor_000000{background:#000000}
-.bgcolor_808080{background:#808080}
-.bgcolor_808040{background:#808040}
-.bgcolor_808080{background:#808080}
-.bgcolor_408080{background:#408080}
-.bgcolor_C0C0C0{background:#C0C0C0}
-.bgcolor_400040{background:#400040}
-.bgcolor_FFFFFF{background:#FFFFFF}
+.bgcolor_FF8080{background:#FF8080;}
+.bgcolor_FFFF80{background:#FFFF80;}
+.bgcolor_80FF80{background:#80FF80;}
+.bgcolor_00FF80{background:#00FF80;}
+.bgcolor_80FFFF{background:#80FFFF;}
+.bgcolor_0080FF{background:#0080FF;}
+.bgcolor_FF80C0{background:#FF80C0;}
+.bgcolor_FF80FF{background:#FF80FF;}
+.bgcolor_FF0000{background:#FF0000;}
+.bgcolor_FFFF00{background:#FFFF00;}
+.bgcolor_80FF00{background:#80FF00;}
+.bgcolor_00FF40{background:#00FF40;}
+.bgcolor_00FFFF{background:#00FFFF;}
+.bgcolor_0080C0{background:#0080C0;}
+.bgcolor_8080C0{background:#8080C0;}
+.bgcolor_FF00FF{background:#FF00FF;}
+.bgcolor_804040{background:#804040;}
+.bgcolor_FF8040{background:#FF8040;}
+.bgcolor_00FF00{background:#00FF00;}
+.bgcolor_008080{background:#008080;}
+.bgcolor_004080{background:#004080;}
+.bgcolor_8080FF{background:#8080FF;}
+.bgcolor_800040{background:#800040;}
+.bgcolor_FF0080{background:#FF0080;}
+.bgcolor_800000{background:#800000;}
+.bgcolor_FF8000{background:#FF8000;}
+.bgcolor_008000{background:#008000;}
+.bgcolor_008040{background:#008040;}
+.bgcolor_0000FF{background:#0000FF;}
+.bgcolor_0000A0{background:#0000A0;}
+.bgcolor_800080{background:#800080;}
+.bgcolor_8000FF{background:#8000FF;}
+.bgcolor_400000{background:#400000;}
+.bgcolor_804000{background:#804000;}
+.bgcolor_004000{background:#004000;}
+.bgcolor_004040{background:#004040;}
+.bgcolor_000080{background:#000080;}
+.bgcolor_000040{background:#000040;}
+.bgcolor_400040{background:#400040;}
+.bgcolor_400080{background:#400080;}
+.bgcolor_000000{background:#000000;}
+.bgcolor_808080{background:#808080;}
+.bgcolor_808040{background:#808040;}
+.bgcolor_808080{background:#808080;}
+.bgcolor_408080{background:#408080;}
+.bgcolor_C0C0C0{background:#C0C0C0;}
+.bgcolor_400040{background:#400040;}
+.bgcolor_FFFFFF{background:#FFFFFF;}
 
 .flyimg{cursor:pointer;}
 
@@ -170,9 +177,9 @@ code{background:#f6feff; font-family:Courier New; padding:2px 4px; margin:0px 4p
 .ed2k_box div{border:1px solid #0000FF; background:#F4F4F4;}
 .ed2k_line, .ed2k_title{padding:0px; margin:0px;}
 .ed2k_line{border-top:1px solid #9e9e61; background:#FFFFFF;}
-.ed2k_cb{width:35px; text-align:center;padding:7px; }
+/* .ed2k_cb{width:35px; text-align:center;padding:7px; }
 .ed2k_name{width:600px;text-align:left;}
-.ed2k_size{width:90px;}
+.ed2k_size{width:90px;} */
 .ed2k_dl_div{margin:10px 0px; padding:14px;}
 .ed2k_dl_button{border:1px solid #9e9e61; margin-left:20px; background:#e9f5dc;}
 

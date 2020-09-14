@@ -148,7 +148,8 @@ Coralian.setToGlobal("FlyCodes", {
 			src = src.replace(/\r\n/g, "\n"); // 把 \r 给全部去掉，免得出现各种奇怪的东西
 			src = src.replace(/\r/g, "\n");
 			let parse = langProxy[name];
-			return parse.toHTML(src, getPlugIn(name));
+			let html = parse.toHTML(src, getPlugIn(name));
+			return `<div class="flycodes">${html}</div>`;
 		} catch (e) {
 			Coralian.logger.err(e);
 			return `<pre>${src}</pre>`;

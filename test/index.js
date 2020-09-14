@@ -57,8 +57,8 @@ let output = FlyCodes.toHTML(src, "HitOn");
 let html = `<html><head>
 <title>测试</title>
 <link rel="stylesheet" type="text/css" href="./style.css" />
-<link rel="stylesheet" type="text/css" href="./read.css" />
-<link rel="stylesheet" type="text/css" href="./FlyHighLighter.css" />
+<link rel="stylesheet" type="text/css" href="./../demo/FlyShow.css" />
+<link rel="stylesheet" type="text/css" href="./../demo/FlyHighLighter.css" />
 </head>
 <body>
 ${output}

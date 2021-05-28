@@ -3,9 +3,9 @@ require("../src/index");
 require("flyhighlighter");
 FlyCodes.setHighLighter(FlyHighLighter.execute);
 
-var fs = require("fs");
-
-var src = fs.readFileSync("./test/input.hiton", "utf-8");
+const fs = require("fs");
+const types = ["UBB", "HitOn", "md"];
+// var src = fs.readFileSync("./test/input.hiton", "utf-8");
 
 const FACE_NAME = ['黑线', '怒', '眼泪', '炸毛', '蛋定', '微笑', '汗', '囧', '卧槽', '坏笑', '鼻血', '大姨妈', '瞪眼', '你说啥', '一脸血', '害羞',
 	'大好', '喝茶看戏', '美～', '笑岔', '中箭', '呕', '撇嘴', '碎掉', '吐舌头', '纳尼', '泪流满面', '升仙', '扭曲', '闪闪亮', '山', '寨', '基',
@@ -52,16 +52,20 @@ FlyCodes.addPlugIn({
 	]
 });
 
-let output = FlyCodes.toHTML(src, "HitOn");
+types.map(item => {
+	let src = fs.readFileSync(`./test/input.${item}`, "utf-8");
+	let output = FlyCodes.toHTML(src, item);
+	
+	let html = `<html><head>
+	<title>测试</title>
+	<link rel="stylesheet" type="text/css" href="./style.css" />
+	<link rel="stylesheet" type="text/css" href="./../demo/FlyShow.css" />
+	<link rel="stylesheet" type="text/css" href="./../demo/FlyHighLighter.css" />
+	</head>
+	<body>
+	${output}
+	</body></html>`;
+	
+	fs.writeFileSync("./test/output.html", html);
+});
 
-let html = `<html><head>
-<title>测试</title>
-<link rel="stylesheet" type="text/css" href="./style.css" />
-<link rel="stylesheet" type="text/css" href="./../demo/FlyShow.css" />
-<link rel="stylesheet" type="text/css" href="./../demo/FlyHighLighter.css" />
-</head>
-<body>
-${output}
-</body></html>`;
-
-fs.writeFileSync("./test/output.html", html);

@@ -7,8 +7,8 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Test marked",
-			"program": "${workspaceFolder}/test/test-marked.js"
+			"name": "Test",
+			"program": "${workspaceFolder}/test/index.js"
 		},
 		{
 			"type": "node",

@@ -5,7 +5,7 @@ FlyCodes.setHighLighter(FlyHighLighter.execute);
 
 var fs = require("fs");
 
-var src = fs.readFileSync("./test/test.hiton", "utf-8");
+var src = fs.readFileSync("./test/input.hiton", "utf-8");
 
 const FACE_NAME = ['黑线', '怒', '眼泪', '炸毛', '蛋定', '微笑', '汗', '囧', '卧槽', '坏笑', '鼻血', '大姨妈', '瞪眼', '你说啥', '一脸血', '害羞',
 	'大好', '喝茶看戏', '美～', '笑岔', '中箭', '呕', '撇嘴', '碎掉', '吐舌头', '纳尼', '泪流满面', '升仙', '扭曲', '闪闪亮', '山', '寨', '基',

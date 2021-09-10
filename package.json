@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "flyhighlighter": "0.0.4",
-    "coralian": "0.0.19",
+    "coralian": "0.0.26",
     "marked": "^2.0.6",
     "mathjax": "^3.1.4"
   }

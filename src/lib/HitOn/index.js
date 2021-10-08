@@ -407,7 +407,7 @@ commons.clear = (str) => {
 	return str;
 };
 
-commons.getVersion = (version) => {
+commons.getByVersion = (version) => {
 	if (!version) {
 		return commons;
 	} else {
